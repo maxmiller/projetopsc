@@ -2,17 +2,20 @@
 
 void ULA::ULABehaviour(){
 	switch(opSel){
-		case 0: //sum A + B
+		case ulaOperation_add: //sum A + B
 			ulaOut = opA + opB;
 			break;
-		case 1: //mult
+		case ulaOperation_multiply: //mult
 			ulaOut = opA * opB;
 			break;
-		case 2: //and
+		case ulaOperation_and: //and
 			ulaOut = opA & opB;
 			break;
-		case 3: //inc A
+		case ulaOperation_inc: //inc A
 			ulaOut = opA + 1;
+			break;
+		case ulaOperation_doNothing: //do nothing
+			ulaOut = opA;
 			break;
 	}	
 }

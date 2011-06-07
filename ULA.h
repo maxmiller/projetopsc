@@ -11,7 +11,7 @@ SC_MODULE (ULA) {
 
 	void ULABehaviour();
 
-	SC_CTOR(ULA, int wordSize){
+	SC_CTOR(ULA){
 		SC_METHOD(ULABehaviour);
 		sensitive << opA << opB << opSel;
 	}
