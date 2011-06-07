@@ -3,6 +3,7 @@
 
 #define WORD_SIZE 16
 #define MEMORY_SIZE 32
+#define RF_SIZE 8
 
 typedef enum UlaOperation{
 	ulaOperation_add,
