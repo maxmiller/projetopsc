@@ -4,3 +4,8 @@ Repósitorio do projeto da disciplina de Projeto de Sistemas em CHIP
 
 Pessoal vamos padronizar de fazer os códigos em ingles (Nomes de classes, Métodos e Variáveis), porém os 
 commits e comentários podemos fazer em portugues
+
+7 de junho
+
+Implementamos as seguintes instruções no formato 16 bits type(2), op(5), dest(3), src1(3), src2(3), ou 32 bits type(2), op(5), dest(3), src1(3), src2(3), Address(16) como é mostrado no livro do gajiski pg 403.
+
