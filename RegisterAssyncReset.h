@@ -7,7 +7,7 @@
 SC_MODULE(RegisterAssyncReset)
 {
 	public:
-	sc_in<bool> clk, reset;
+	sc_in<bool> clk, reset, load;
 	sc_in<sc_uint<WORD_SIZE>> dataIn;
 	sc_out<sc_uint<WORD_SIZE>> dataOut;
 
