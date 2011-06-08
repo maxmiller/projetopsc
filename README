@@ -9,3 +9,8 @@ commits e comentários podemos fazer em portugues
 
 Implementamos as seguintes instruções no formato 16 bits type(2), op(5), dest(3), src1(3), src2(3), ou 32 bits type(2), op(5), dest(3), src1(3), src2(3), Address(16) como é mostrado no livro do gajiski pg 403.
 
+7 de junho
+
+- Adicionando correções necessárias para compilação
+- Para compilar os códigos configure as variáveis LDFLAGS e INCLUDES do Makefile de acordo com a localização das libs e includes do systemc em seu ambiente.
+- Após a configuração digite "make"
