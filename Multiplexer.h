@@ -1,20 +1,26 @@
 #ifndef Multiplexer_h
 #define Multiplexer_h
 #include <systemc.h>
+#include "config.h"
 
 SC_MODULE (Multiplexer) {
 	// Memory output, Register file output, PC, IR
-	sc_in<sc_int<WORD_SIZE>> inputs[4]; 
-	sc_in<sc_int<WORD_SIZE>> sel;
+	sc_in<sc_int<WORD_SIZE> > *inputs; 
+	sc_in<sc_int<WORD_SIZE> > sel;
 
-	sc_out<sc_int<WORD_SIZE>> output;
+	sc_out<sc_int<WORD_SIZE> > output;
+
+	int numOutputs;
 
 	void MultiplexerBehaviour();
 
-	SC_CTOR(Multiplexer){
+	SC_HAS_PROCESS (Multiplexer);
+	Multiplexer(sc_module_name name, int numOutputs) : sc_module(name){
 		SC_METHOD(MultiplexerBehaviour);
 		sensitive << sel;
-		for(int i=0;i<4;i++)
+		inputs = new sc_in<sc_int<WORD_SIZE> >[numOutputs];
+		this->numOutputs = numOutputs;
+		for(int i=0;i<numOutputs;i++)
 			sensitive<<inputs[i];
 	}
 

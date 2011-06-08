@@ -1,4 +1,4 @@
-#include <Memory.h>
+#include "Memory.h"
 
 void Memory::t_sync_mem() {
 	if(rst) {
@@ -6,8 +6,8 @@ void Memory::t_sync_mem() {
 		wait();
 	}
 	while(1) {
-		if(write) mem[address] = datai;
-		else datao = mem[address];
+		if(write) mem[address.read().to_int()] = datai;
+		else datao = mem[address.read().to_int()];
 		wait();
 	}
 }

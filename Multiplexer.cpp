@@ -1,8 +1,8 @@
 #include "Multiplexer.h"
 
-Multiplexer::MultiplexerBehaviour(){
-	if(sel < 4)
-		output = inputs[sel];
+void Multiplexer::MultiplexerBehaviour(){
+	if(sel.read().to_int() < numOutputs)
+		output = inputs[sel.read().to_int()];
 	else
 		output = inputs[0];
 }

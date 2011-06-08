@@ -1,5 +1,6 @@
-#ifndef RULA_h
-#define RULA_h
+#ifndef Memory_h
+#define Memory_h
+#include <systemc.h>
 #include "config.h"
 
 SC_MODULE(Memory) {
@@ -10,13 +11,12 @@ SC_MODULE(Memory) {
 		sc_in<sc_uint<WORD_SIZE> > datai;
 		sc_out<sc_uint<WORD_SIZE> > datao;
 		//internos
-		sc_uint<sc_uint<WORD_SIZE> > mem[MEMORY_SIZE];
+		sc_uint<WORD_SIZE> mem[MEMORY_SIZE];
 	public:
 		void t_sync_mem();
 
-		SC_CTOR(sync_mem) {
+		SC_CTOR(Memory) {
 			SC_CTHREAD(t_sync_mem, clk.pos());
-			watching(rst.delayed());
 		}
 };
 
