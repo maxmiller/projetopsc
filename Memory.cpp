@@ -1,14 +1,14 @@
-#include <Memory.h>
+#include "memory.h"
+#include "systemc.h"
 
-void Memory::t_sync_mem() {
+void memory::t_sync_mem() {
 	if(rst) {
 		datao = 0x00;
 		wait();
 	}
 	while(1) {
-		if(write) mem[address] = datai;
-		else datao = mem[address];
+		if(writer) mem[addres.read()] =  (datai);
+		else datao =mem[addres.read()]  ;
 		wait();
 	}
 }
-
