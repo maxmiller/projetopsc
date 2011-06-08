@@ -29,30 +29,14 @@ int sc_main (int argc, char* argv[]) {
 	sc_trace(tf, writer, "writer");
 	//int i=0;
 	rst = 0;       
-	writer = 0;     
+	//writer = 0;     
 	datai = 1;
-	clk = 0; 
+	addres = 0x00; 
 	sc_start(1);
 	clk = 1; 
 	sc_start(1);
 	
-	rst = 1;    // Assert the reset
-	clk = 0; 
-	datai = 1;
-	//sc_start(1);
-	clk = 1; 
-	sc_start(1);
-	rst = 0;    // De-assert the reset
-	clk = 0; 
-	sc_start(1);
-	clk = 1; 
-	sc_start(1);
-	writer = 1;  // Assert enable
-	clk = 0; 
-	sc_start(1);
-	clk = 1; 
-	sc_start(1);
-	writer = 0; // De-assert enable
+	
 	
 	cout << "@" << sc_time_stamp() <<" Terminating simulation\n" << endl;
 	
