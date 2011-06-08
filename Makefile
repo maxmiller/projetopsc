@@ -1,7 +1,10 @@
 
+#includes do system-c
 INCLUDES=-I../systemc-2.2.0/include/
 
-COMPONENT_NAME=rula
+COMPONENT_NAME=processor
+
+#libs do system-c
 LDFLAGS=-L../systemc-2.2.0/lib-linux -lsystemc
 CPPFLAGS=-Wall -fPIC $(INCLUDES)
 
