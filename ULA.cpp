@@ -17,5 +17,18 @@ void ULA::ULABehaviour(){
 		case ulaOperation_doNothing: //do nothing
 			ulaOut = opA.read();
 			break;
+		case ulaOperation_gt:
+			ulaStatus = (opA.read() > opB.read());
+			break;
+		case ulaOperation_lt:
+			ulaStatus = (opA.read() < opB.read());
+			break;
+		case ulaOperation_eq:
+			ulaStatus = (opA.read() == opB.read());
+			break;
+		case ulaOperation_eqz:
+			ulaStatus = (opA.read() == 0);
+			break;
+
 	}	
 }

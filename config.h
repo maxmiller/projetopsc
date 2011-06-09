@@ -11,6 +11,10 @@ typedef enum UlaOperation_{
 	ulaOperation_multiply,
 	ulaOperation_inc,
 	ulaOperation_doNothing,
+	ulaOperation_lt,
+	ulaOperation_gt,
+	ulaOperation_eq,
+	ulaOperation_eqz,
 }UlaOperation;
 
 #endif
