@@ -12,15 +12,15 @@ SC_MODULE (Demultiplexer) {
 
 	void DemultiplexerBehaviour();
 
-	int numInputs;
+	int numOutputs;
 
 	SC_HAS_PROCESS (Demultiplexer);
 
-	Demultiplexer(sc_module_name name, int numInputs) : sc_module(name){
+	Demultiplexer(sc_module_name name, int numOutputs) : sc_module(name){
 		SC_METHOD(DemultiplexerBehaviour);
 		sensitive << sel << input;
-		this->numInputs = numInputs;
-		outputs = new sc_out<sc_int<WORD_SIZE> >[numInputs];
+		this->numOutputs = numOutputs;
+		outputs = new sc_out<sc_int<WORD_SIZE> >[numOutputs];
 	}
 
 };

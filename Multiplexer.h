@@ -10,17 +10,17 @@ SC_MODULE (Multiplexer) {
 
 	sc_out<sc_int<WORD_SIZE> > output;
 
-	int numOutputs;
+	int numInputs;
 
 	void MultiplexerBehaviour();
 
 	SC_HAS_PROCESS (Multiplexer);
-	Multiplexer(sc_module_name name, int numOutputs) : sc_module(name){
+	Multiplexer(sc_module_name name, int numInputs) : sc_module(name){
 		SC_METHOD(MultiplexerBehaviour);
 		sensitive << sel;
-		inputs = new sc_in<sc_int<WORD_SIZE> >[numOutputs];
-		this->numOutputs = numOutputs;
-		for(int i=0;i<numOutputs;i++)
+		inputs = new sc_in<sc_int<WORD_SIZE> >[numInputs];
+		this->numInputs = numInputs;
+		for(int i=0;i<numInputs;i++)
 			sensitive<<inputs[i];
 	}
 
