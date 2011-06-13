@@ -13,7 +13,7 @@ CPPFLAGS=-Wall -fPIC $(INCLUDES)
 SRCS=$(shell find -name '*.cpp')
 OBJS=$(SRCS:.cpp=.o)
 
-all: $(OBJS) executable cleanobjs
+all: $(OBJS) executable
 
 executable:
 	@mkdir -p bin
