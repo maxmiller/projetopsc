@@ -9,10 +9,10 @@ SC_MODULE(RegisterAssyncReset)
 {
 	public:
 	sc_in<bool> clk, reset, load;
-	sc_in<sc_uint<WORD_SIZE> > dataIn;
-	sc_out<sc_uint<WORD_SIZE> > dataOut;
+	sc_in<sc_int<WORD_SIZE> > dataIn;
+	sc_out<sc_int<WORD_SIZE> > dataOut;
 
-	sc_uint<WORD_SIZE> internalData;
+	sc_int<WORD_SIZE> internalData;
 
 	public:
 	void RegisterBehaviour();

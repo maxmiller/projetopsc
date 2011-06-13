@@ -26,11 +26,13 @@ SC_MODULE (ControlUnit) {
 	public:
 		sc_in<bool> clock;
 		//vem diretamente da saída de IR
-		sc_in<sc_int<2> > instructionType;
-		sc_in<sc_int<6> > operation;
-		sc_in<sc_int<3> > dest;
-		sc_in<sc_int<3> > src1;
-		sc_in<sc_int<3> > src2;
+		//
+		sc_in<sc_int<WORD_SIZE> > iRInput;
+//		int instructionType;
+//		int operation;
+//		int dest;
+//		int src1;
+//		int src2;
 		
 		sc_in<bool> statusBit;
 
@@ -45,16 +47,13 @@ SC_MODULE (ControlUnit) {
 		sc_out<bool> rfReadWriteBit;
 		sc_out<bool> writeMemory;
 	
-		//espaço de endereçamento de RF é igual ao tamanho de dest, src1 e src2
-		sc_out<sc_int<3> > RF;
-
 		sc_out<bool> loadRA;
 		sc_out<bool> loadRB;
 		sc_out<bool> loadIR;
 		sc_out<bool> loadAR;
 		sc_out<bool> loadPC;
 		sc_out<bool> loadDR;
-		sc_out<bool> loadStatus;
+	//	sc_out<bool> loadStatus;
 
 
 		int state; //controls the control unit state
