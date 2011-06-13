@@ -53,3 +53,16 @@ Op = 8 => statusBit = 1 se RF[src1] == 0
 
 Agora o repositório está mais organizado, adicionei makefiles para os arquivos, porém só devem funcionar no linux
 
+
+TODO
+gerar um diagrama do processador no simulink
+
+13 de junho
+
+vamos precisar de um gerador de CDFG de alguma forma
+
+Data de Entrega do processador:
+sexta, dia 18 de junho
+
+Data de Entrega do trabalho final:
+dia 15 de julho
