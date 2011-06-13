@@ -20,14 +20,14 @@ Implementamos as seguintes instruções no formato 16 bits type(2), op(5), dest(
 -Intruçoes Implementadas
 tipo 1 Operação de Registradores
 Op(5), dest(3), src1(3), scr2(3)
-Op = 0 => RF (dest) = RF(src1) + RF(src2)
-Op = 1 => RF (dest) = RF(src1) x RF(src2)
-Op = 2 => RF (dest) = RF(src1) and RF(src2)
-Op = 3 => RF (dest) = RF(src1) + 1
-Op = 4 => RF (dest) = RF(src1)
+Op = 0 => RF [dest] = RF[src1] + RF[src2]
+Op = 1 => RF [dest] = RF[src1] x RF[src2]
+Op = 2 => RF [dest] = RF[src1] and RF(src2]
+Op = 3 => RF [dest] = RF[src1] + 1
+Op = 4 => RF [dest] = RF[src1]
 
 Op(5), dest(3), src1(3), scr2(3), constante(16)
-Op = 5 => RF (des) = constante
+Op = 5 => RF [des] = constante
 
 tipo 2 Operação de Memória
 Op(5), dest(3), src1(3), scr2(3), endereço(16)
@@ -44,9 +44,9 @@ Op = 0 => PC = endereço
 Op = 1 => se statusBit PC = endereço senão PC = PC + 1
 
 tipo 4 Operação de micelania
-Op = 5 => statusBit = 1 se RF(src1) > RF(src2)
-Op = 6 => statusBit = 1 se RF(src1) < RF(src2)
-Op = 7 => statusBit = 1 se RF(src1) == RF(src2)
-Op = 8 => statusBit = 1 se RF(src1) == 0
+Op = 5 => statusBit = 1 se RF[src1] > RF[src2]
+Op = 6 => statusBit = 1 se RF[src1] < RF[src2]
+Op = 7 => statusBit = 1 se RF[src1] == RF[src2]
+Op = 8 => statusBit = 1 se RF[src1] == 0
 
 TODO adicionar na ula as operações 5,6,7 e 8
