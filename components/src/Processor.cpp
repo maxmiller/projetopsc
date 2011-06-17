@@ -1,7 +1,6 @@
 #include "Processor.h"
 
-Processor::Processor(sc_module_name name){
-	//SC_THREAD(processorBehaviour);
+Processor::Processor(sc_module_name name) : sc_module(name){
 
 	RA = new RegisterAssyncReset("RA");
 	RA->clk(clock);
@@ -18,34 +17,40 @@ Processor::Processor(sc_module_name name){
 	AR = new RegisterAssyncReset("AR");
 	AR->clk(clock);
 	AR->dataOut(aRoutSignal);
+//	AR->dataOut(aRoutToMemorySignal);
+	AR->dataIn(aRinSignal);
 	AR->load(aRLoadSignal);
 	AR->reset(resetRegisters);
 	
 	DR = new RegisterAssyncReset("DR");
 	DR->clk(clock);
 	DR->dataOut(dRoutSignal);
+	DR->dataIn(dRinSignal);
 	DR->load(dRLoadSignal);
 	DR->reset(resetRegisters);
 
 	PC = new RegisterAssyncReset("PC");
 	PC->clk(clock);
 	PC->dataOut(pCoutSignal);
+	PC->dataIn(pCinSignal);
 	PC->load(pCLoadSignal);
 	PC->reset(resetRegisters);
 
 	IR = new RegisterAssyncReset("IR");
 	IR->clk(clock);
 	IR->dataOut(iRoutSignal);
+	IR->dataIn(iRinSignal);
 	IR->load(iRLoadSignal);
 	IR->reset(resetRegisters);
 
 	ula = new ULA("Ula");
-	ula->ulaOut(demuxUlaInSignal);
+	ula->ulaOut(demuxUlaOutSignal);
 	ula->opSel(ulaOpSignal);
 	ula->ulaStatus(ulaStatusSignal);
 
 
 	registerFile = new RegisterFile("RegisterFile");
+	registerFile->clock(clock);
 	registerFile->sel(rFSelSignal);
 	registerFile->rwBit(rFWriteBitSignal);
 	registerFile->out(rFoutSignal);
@@ -58,7 +63,8 @@ Processor::Processor(sc_module_name name){
 	raMultiplexer->inputs[2](pCoutSignal);
 	raMultiplexer->inputs[3](iRoutSignal);
 	raMultiplexer->inputs[4](rFoutSignal);
-
+	raMultiplexer->sel(muxRaSelSignal);
+	
 	raMultiplexer->output(muxRaOutSignal);
 	RA->dataIn(muxRaOutSignal);
 
@@ -69,7 +75,8 @@ Processor::Processor(sc_module_name name){
 	rbMultiplexer->inputs[1](dRoutSignal);
 	rbMultiplexer->inputs[2](pCoutSignal);
 	rbMultiplexer->inputs[3](iRoutSignal);
-	raMultiplexer->inputs[4](rFoutSignal);
+	rbMultiplexer->inputs[4](rFoutSignal);
+	rbMultiplexer->sel(muxRbSelSignal);
 
 	rbMultiplexer->output(muxRbOutSignal);
 	RB->dataIn(muxRbOutSignal);
@@ -85,6 +92,8 @@ Processor::Processor(sc_module_name name){
 	ulaOutputDemultiplexer->outputs[2](pCinSignal);
 	ulaOutputDemultiplexer->outputs[3](iRinSignal);
 	ulaOutputDemultiplexer->outputs[4](rFinSignal);
+	ulaOutputDemultiplexer->sel(demuxUlaSelSignal);
+	
 
 
 
@@ -116,17 +125,25 @@ Processor::Processor(sc_module_name name){
 	//entrada de ir na unidade de controle
 	controlUnit->iRInput(iRoutSignal);
 
-	sensitive << clock;
 
 	controlUnit->writeMemory(writeMemorySignal);
-	writeMemory(writeMemorySignal);
 
+	SC_METHOD(processorBehavior);
+	sensitive  << memoryDataInput << writeMemorySignal
+						 << aRoutSignal << dRoutSignal;
+	
+	
+}
 
-	//deve dar problema
-	memoryData(dRoutSignal);
-	memoryDataInput(dRinSignal);
-	memoryAddress(aRoutSignal);
+void Processor::processorBehavior(){
+	memoryAddress.write(aRoutSignal.read());
+	writeMemory.write(writeMemorySignal.read());
 
-
+	if(writeMemorySignal.read()){ //escrever na memoria
+		memoryData.write(dRoutSignal.read());
+	}
+	else{ //ler da memoria e colocar em DR
+		dRinSignal.write(memoryDataInput.read());
+	}
 }
 

@@ -102,7 +102,9 @@ SC_MODULE (ControlUnit) {
 		void resetAllLoads();
 
 		SC_CTOR(ControlUnit){
+			state = 0;
 			SC_THREAD(ControlUnitBehaviour);
+			sensitive<<clock;
 		}
 };
 

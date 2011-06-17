@@ -4,7 +4,9 @@
 void ControlUnit::ControlUnitBehaviour(){
 	while(true){
 		resetAllLoads();
+		cout<<"checking actual state"<<endl;
 		switch(state){
+			
 			/*instruction fetching IR = mem[PC] begin*/
 			case 0:
 				//AR = PC
@@ -14,7 +16,9 @@ void ControlUnit::ControlUnitBehaviour(){
 				loadAR = 1; //Loads AR
 				writeMemory = 0; //read from memory
 				state ++;
-				wait(clock);
+				cout<<"loading pc to AR"<<endl;
+				wait(1);//espera um evento
+				cout<<"\n\n\n"<<endl;
 				break;
 			case 1:
 				//IR = DR
@@ -23,7 +27,9 @@ void ControlUnit::ControlUnitBehaviour(){
 				ulaOutDemuxSel = UlaOutputSelection_IR; //IR
 				loadIR = 1; //Loads IR
 				state ++;
-				wait(clock);
+				cout<<"loading DR to IR"<<endl;
+				wait(1);//espera um evento
+				cout<<"\n\n\n"<<endl;
 				break;
 				/*instruction fetching IR = mem[PC] end*/
 			case 2:
@@ -33,10 +39,13 @@ void ControlUnit::ControlUnitBehaviour(){
 				ulaOutDemuxSel = UlaOutputSelection_PC; //PC
 				loadPC = 1;
 				state ++;
-				wait(clock);
+				wait(1);//espera um evento
+				cout<<"increment pc"<<endl;
 				break;
+				cout<<"\n\n\n"<<endl;
 				/*increment pc PC = PC+1 end*/
 			case 3:
+				cout<<"process instruction"<<endl;
 				if(processInstruction())
 					state = 0;
 				break;
@@ -47,9 +56,13 @@ void ControlUnit::ControlUnitBehaviour(){
 
 bool ControlUnit::processInstruction(){
 	//tipo está nos primeiros 2 bits de IR
-	switch(iRInput.read().range(0,1).to_int()){
+	cout<<__FILE__<<"::"<<__LINE__<<endl;
+	for(int i=0;i<WORD_SIZE; i++)
+		cout<<iRInput.read()[i]<<endl;
+	switch(iRInput.read().range(1,0).to_int()){
 		case 0://instrução de registradores
 			{
+				cout<<__FILE__<<"::"<<__LINE__<<endl;
 				if(processRegisterInstruction())
 					return true;
 			}
@@ -85,7 +98,7 @@ bool ControlUnit::processMiscellaneousInstruction(){
 	rfReadWriteBit = 0;
 	loadRA = 1;
 
-	wait(clock);
+	wait(1);//espera um evento
 	resetAllLoads();
 
 	//RB = RF(src2)
@@ -94,7 +107,7 @@ bool ControlUnit::processMiscellaneousInstruction(){
 	rfReadWriteBit = 0;
 	loadRB = 1;
 
-	wait(clock);
+	wait(1);//espera um evento
 	resetAllLoads();
 
 	//Status = ulaOut
@@ -114,7 +127,7 @@ bool ControlUnit::processControlInstruction(){
 				ulaOutDemuxSel = UlaOutputSelection_PC; //PC
 				loadPC = 1;
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 
 				//AR = PC
@@ -124,7 +137,7 @@ bool ControlUnit::processControlInstruction(){
 				loadAR = 1; //Loads AR
 				writeMemory = 0; //read from memory
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 
 				//PC = DR
@@ -144,7 +157,7 @@ bool ControlUnit::processControlInstruction(){
 					ulaOutDemuxSel = UlaOutputSelection_PC; //PC
 					loadPC = 1;
 
-					wait(clock);
+					wait(1);//espera um evento
 					resetAllLoads();
 
 					//AR = PC
@@ -154,7 +167,7 @@ bool ControlUnit::processControlInstruction(){
 					loadAR = 1; //Loads AR
 					writeMemory = 0; //read from memory
 
-					wait(clock);
+					wait(1);//espera um evento
 					resetAllLoads();
 
 					//PC = DR
@@ -171,7 +184,7 @@ bool ControlUnit::processControlInstruction(){
 					ulaOutDemuxSel = UlaOutputSelection_PC; //PC
 					loadPC = 1;
 
-					wait(clock);
+					wait(1);//espera um evento
 				}
 				return true;
 			}
@@ -182,11 +195,13 @@ bool ControlUnit::processControlInstruction(){
 
 
 bool ControlUnit::processRegisterInstruction(){
-	switch (iRInput.read().range(2,5).to_int()){
+	cout<<__FILE__<<"::"<<__LINE__<<endl;
+	switch (iRInput.read().range(5,2).to_int()){
 		case 0: //RF[dest] = CTE
 			{
+				cout<<__FILE__<<"::"<<__LINE__<<endl;
 				//guarda o endereço onde será guardado address
-				rfSel = iRInput.read().range(6,8); 
+				rfSel = iRInput.read().range(8,6); 
 
 				//PC = PC + 1
 				ulaOp = ulaOperation_inc;
@@ -194,7 +209,7 @@ bool ControlUnit::processRegisterInstruction(){
 				ulaOutDemuxSel = UlaOutputSelection_PC; //PC
 				loadPC = 1;
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 				
 				//AR = PC
@@ -204,7 +219,7 @@ bool ControlUnit::processRegisterInstruction(){
 				loadAR = 1; //Loads AR
 				writeMemory = 0; //read from memory
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 
 				//RF[rfSel] = DR
@@ -220,26 +235,26 @@ bool ControlUnit::processRegisterInstruction(){
 			{
 				//RA = RF(src1)
 				ulaInAMuxSel = UlaInputSelection_RF;
-				rfSel = iRInput.read().range(9,11);
+				rfSel = iRInput.read().range(11,9);
 				rfReadWriteBit = 0;
 				loadRA = 1;
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 
 				//RB = RF(src2)
 				ulaInBMuxSel = UlaInputSelection_RF;
-				rfSel = iRInput.read().range(12,15);
+				rfSel = iRInput.read().range(15,12);
 				rfReadWriteBit = 0;
 				loadRB = 1;
-				ulaOp = iRInput.read().range(2,5);
+				ulaOp = iRInput.read().range(5,2);
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 
 				//RF(dest) = ulaOut
 				ulaInBMuxSel = UlaOutputSelection_RF;
-				rfSel = iRInput.read().range(6,8);
+				rfSel = iRInput.read().range(8,6);
 				rfReadWriteBit = 1;
 
 				return true;
@@ -261,7 +276,7 @@ bool ControlUnit::processMemoryInstruction(){
 				ulaOutDemuxSel = UlaOutputSelection_PC; //PC
 				loadPC = 1;
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 				
 				//RF[dest] = AR
@@ -270,7 +285,7 @@ bool ControlUnit::processMemoryInstruction(){
 				ulaOutDemuxSel = UlaOutputSelection_RF; //RF
 				rfReadWriteBit = 1; //carrega RF com o valor em rfSel
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 
 				return true;
@@ -287,7 +302,7 @@ bool ControlUnit::processMemoryInstruction(){
 				ulaOutDemuxSel = UlaOutputSelection_PC; //PC
 				loadPC = 1;
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 				
 				ulaOp = ulaOperation_doNothing;
@@ -296,7 +311,7 @@ bool ControlUnit::processMemoryInstruction(){
 				loadAR = 1; //Loads AR
 				writeMemory = 0; //read from memory
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 
 				//RF[dest] = DR
@@ -318,7 +333,7 @@ bool ControlUnit::processMemoryInstruction(){
 				ulaOutDemuxSel = UlaOutputSelection_PC; //PC
 				loadPC = 1;
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 				
 				//AR = PC
@@ -328,7 +343,7 @@ bool ControlUnit::processMemoryInstruction(){
 				loadAR = 1; //Loads AR
 				writeMemory = 0; //read from memory
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 
 				//AR = DR
@@ -337,7 +352,7 @@ bool ControlUnit::processMemoryInstruction(){
 				ulaOutDemuxSel = UlaOutputSelection_AR; //RF
 				writeMemory = 0; //read from memory
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 
 				//RF[dest] = DR
@@ -360,7 +375,7 @@ bool ControlUnit::processMemoryInstruction(){
 				ulaOutDemuxSel = UlaOutputSelection_PC; //PC
 				loadPC = 1;
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 				
 				//AR = PC
@@ -370,7 +385,7 @@ bool ControlUnit::processMemoryInstruction(){
 				loadAR = 1; //Loads AR
 				writeMemory = 0; //read from memory
 				
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 			
 				//AR = DR
@@ -379,7 +394,7 @@ bool ControlUnit::processMemoryInstruction(){
 				ulaOutDemuxSel = UlaOutputSelection_AR; //AR
 				loadAR = 1; //Loads AR
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 				
 				//DR = RF[rfSel]
@@ -389,7 +404,7 @@ bool ControlUnit::processMemoryInstruction(){
 				rfReadWriteBit = 0; //lê valor de RF[rfSel]
 				loadDR = 1; //Loads DR
 				
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 				//Mem[AR] = DR
 				writeMemory = 1;	
@@ -407,7 +422,7 @@ bool ControlUnit::processMemoryInstruction(){
 				ulaOutDemuxSel = UlaOutputSelection_PC; //PC
 				loadPC = 1;
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 				
 				//AR = PC
@@ -417,7 +432,7 @@ bool ControlUnit::processMemoryInstruction(){
 				loadAR = 1; //Loads AR
 				writeMemory = 0; //read from memory
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 
 				//AR = DR
@@ -427,7 +442,7 @@ bool ControlUnit::processMemoryInstruction(){
 				loadAR = 1; //Loads AR
 				writeMemory = 0; //read from memory
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 				
 				//AR = DR
@@ -437,7 +452,7 @@ bool ControlUnit::processMemoryInstruction(){
 				loadAR = 1; //Loads AR
 				writeMemory = 0; //read from memory
 
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 
 				//DR = RF[rfSel]
@@ -446,7 +461,7 @@ bool ControlUnit::processMemoryInstruction(){
 				ulaOutDemuxSel = UlaOutputSelection_DR; //DR
 				loadDR = 1; //Loads DR
 	
-				wait(clock);
+				wait(1);//espera um evento
 				resetAllLoads();
 
 				//Mem[AR] = DR
@@ -454,8 +469,8 @@ bool ControlUnit::processMemoryInstruction(){
 				return true;
 			}
 			break;
-
 	}
+	return false;
 }
 
 
