@@ -15,7 +15,7 @@ all: $(OBJS) executable
 
 executable:
 	@mkdir -p lib
-	  $(CXX) -shared -o lib/lib$(COMPONENT_NAME).so $(OBJS) $(LDFLAGS) -lpthread -lm
+	  $(CXX) -shared -o lib/lib$(COMPONENT_NAME).so $(OBJS) $(LDFLAGS) -lpthread -lm -ggdb
 
 cleanobjs:
 	rm -f $(OBJS)
