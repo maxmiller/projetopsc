@@ -5,20 +5,20 @@
 #include "config.h"
 
 typedef enum UlaInputSelection_t{
-	UlaInputSelection_RF,
-	UlaInputSelection_DR,
 	UlaInputSelection_AR,
+	UlaInputSelection_DR,
 	UlaInputSelection_PC,
 	UlaInputSelection_IR,
+	UlaInputSelection_RF,
 	UlaInputSelection_RStatus,
 }UlaInputSelection;
 
 typedef enum UlaOutputSelection_t{
-	UlaOutputSelection_RF,
-	UlaOutputSelection_DR,
 	UlaOutputSelection_AR,
+	UlaOutputSelection_DR,
 	UlaOutputSelection_PC,
 	UlaOutputSelection_IR,
+	UlaOutputSelection_RF,
 	UlaOutputSelection_RStatus,
 }UlaOutputSelection;
 
@@ -41,6 +41,20 @@ SC_MODULE (ControlUnit) {
 		sc_out<sc_int<WORD_SIZE> > ulaOutDemuxSel;
 		sc_out<sc_int<WORD_SIZE> > ulaInAMuxSel;
 		sc_out<sc_int<WORD_SIZE> > ulaInBMuxSel;
+		
+		/*!
+		 * Esse seletor escolhe se o dado de DR vem da memória ou da ula
+		 * 0 => dado vem da ula
+		 * 1 => dado vem da memória
+		 */
+		sc_out<sc_int<WORD_SIZE> > dRinMuxSel;
+		/*!
+		 * Esse seletor escolhe se o dado de DR vai para a memória ou para algum
+		 * dos registradores da ULA
+		 * 0 => dado vai para a ULA da ula
+		 * 1 => dado vai para a memória
+		 */
+		sc_out<sc_int<WORD_SIZE> > dRoutDemuxSel;
 
 
 		sc_out<sc_int<WORD_SIZE> > rfSel;
@@ -59,7 +73,7 @@ SC_MODULE (ControlUnit) {
 		int state; //controls the control unit state
 		int instructionSubstate; //controls each instruction individual substate
 	public:
-		void ControlUnitBehaviour();
+		void controlUnitBehavior();
 		//!processa instrução qualquer e a subdivide em cada um dos tipos
 		/*!
 		 * Quando o processador incrementa o PC e carrega o registrador de instru-
@@ -101,10 +115,13 @@ SC_MODULE (ControlUnit) {
 
 		void resetAllLoads();
 
+		void incrementPC();
+		void loadsARWithPc();
+
 		SC_CTOR(ControlUnit){
 			state = 0;
-			SC_THREAD(ControlUnitBehaviour);
-			sensitive<<clock;
+			SC_THREAD(controlUnitBehavior);
+			sensitive<<clock.pos();
 		}
 };
 

@@ -7,7 +7,6 @@ void RegisterAssyncReset::RegisterBehaviour(){
 		internalData = 0;
 	}
 	else if(load){ //else loads the input to de output
-		cout<<"loading internal data "<<dataIn<<" to register "<<this->name()<<endl;
 		internalData = dataIn;
 	}
 	dataOut.write(internalData);

@@ -17,7 +17,7 @@ Processor::Processor(sc_module_name name) : sc_module(name){
 	AR = new RegisterAssyncReset("AR");
 	AR->clk(clock);
 	AR->dataOut(aRoutSignal);
-//	AR->dataOut(aRoutToMemorySignal);
+//	AR->dataOut(aRoutToMemorySignal)
 	AR->dataIn(aRinSignal);
 	AR->load(aRLoadSignal);
 	AR->reset(resetRegisters);
@@ -28,6 +28,18 @@ Processor::Processor(sc_module_name name) : sc_module(name){
 	DR->dataIn(dRinSignal);
 	DR->load(dRLoadSignal);
 	DR->reset(resetRegisters);
+
+	dRinMux = new Multiplexer("dRinMux", 2); //entrada da ula e entrada da memória 
+	dRinMux->output(dRinSignal);
+	dRinMux->inputs[0](ulaDemux_to_dRinMux_signal); //saída da ula
+	dRinMux->inputs[1](memoryDataInput); //entrada de dados da memória
+	dRinMux->sel(dRinMuxSelSignal);
+
+	dRoutDemux = new Demultiplexer("dRoutDemux", 2); //saída para o multiplexador da Ula, e saída para memória para escrita.
+	dRoutDemux->input(dRoutSignal);
+	dRoutDemux->outputs[0](ulaMux_to_dRoutMux_signal); //entrada da ula
+	dRoutDemux->outputs[1](memoryDataOutput); //entrada da ula
+	dRoutDemux->sel(dRoutDemuxSelSignal);
 
 	PC = new RegisterAssyncReset("PC");
 	PC->clk(clock);
@@ -59,7 +71,7 @@ Processor::Processor(sc_module_name name) : sc_module(name){
 
 	raMultiplexer = new Multiplexer("raMultiplexer",5);
 	raMultiplexer->inputs[0](aRoutSignal);
-	raMultiplexer->inputs[1](dRoutSignal);
+	raMultiplexer->inputs[1](ulaMux_to_dRoutMux_signal);
 	raMultiplexer->inputs[2](pCoutSignal);
 	raMultiplexer->inputs[3](iRoutSignal);
 	raMultiplexer->inputs[4](rFoutSignal);
@@ -72,7 +84,7 @@ Processor::Processor(sc_module_name name) : sc_module(name){
 
 	rbMultiplexer = new Multiplexer("rbMultiplexer",5);
 	rbMultiplexer->inputs[0](aRoutSignal);
-	rbMultiplexer->inputs[1](dRoutSignal);
+	rbMultiplexer->inputs[1](ulaMux_to_dRoutMux_signal);
 	rbMultiplexer->inputs[2](pCoutSignal);
 	rbMultiplexer->inputs[3](iRoutSignal);
 	rbMultiplexer->inputs[4](rFoutSignal);
@@ -88,7 +100,7 @@ Processor::Processor(sc_module_name name) : sc_module(name){
 	ulaOutputDemultiplexer->input(demuxUlaOutSignal); //conecta a saída da ula na entrada do demux
 	
 	ulaOutputDemultiplexer->outputs[0](aRinSignal);
-	ulaOutputDemultiplexer->outputs[1](dRinSignal);
+	ulaOutputDemultiplexer->outputs[1](ulaDemux_to_dRinMux_signal);
 	ulaOutputDemultiplexer->outputs[2](pCinSignal);
 	ulaOutputDemultiplexer->outputs[3](iRinSignal);
 	ulaOutputDemultiplexer->outputs[4](rFinSignal);
@@ -117,6 +129,8 @@ Processor::Processor(sc_module_name name) : sc_module(name){
 	controlUnit->ulaInAMuxSel(muxRaSelSignal);
 	controlUnit->ulaInBMuxSel(muxRbSelSignal);
 	controlUnit->ulaOutDemuxSel(demuxUlaSelSignal);
+	controlUnit->dRinMuxSel(dRinMuxSelSignal);
+	controlUnit->dRoutDemuxSel(dRoutDemuxSelSignal);
 
 	//operação da ula
 	controlUnit->ulaOp(ulaOpSignal);
@@ -126,24 +140,40 @@ Processor::Processor(sc_module_name name) : sc_module(name){
 	controlUnit->iRInput(iRoutSignal);
 
 
-	controlUnit->writeMemory(writeMemorySignal);
+	controlUnit->writeMemory(writeMemory);
+
+
 
 	SC_METHOD(processorBehavior);
-	sensitive  << memoryDataInput << writeMemorySignal
-						 << aRoutSignal << dRoutSignal;
-	
-	
+	sensitive  << clock.pos();
+	SC_METHOD(processorBehavior2);
+	sensitive  << AR->dataOut;
+
+}
+
+void Processor::processorBehavior2(){
+	memoryAddress.write(AR->dataOut.read());
+
 }
 
 void Processor::processorBehavior(){
-	memoryAddress.write(aRoutSignal.read());
-	writeMemory.write(writeMemorySignal.read());
+	//cout<<"arOutsignal "<<aRoutSignal.read()<<endl;
+	//cout<<"arOutsignal "<<AR->dataOut.read()<<endl;
+	//cout<<"memoryData "<<memoryDataInput.read()<<endl;
+	//cout<<"statusBit "<<ulaStatusSignal<<endl;
+	////cout<<"memory data from data input "<<memoryDataInput.read()<<endl;
+	////cout<<"memory data from data output "<<memoryDataOutput.read()<<endl;
+	////cout<<"DRinSel " <<dRinMuxSelSignal.read()<<endl;
+	////cout<<"DRoutSel " <<dRoutDemuxSelSignal.read()<<endl;
 
-	if(writeMemorySignal.read()){ //escrever na memoria
-		memoryData.write(dRoutSignal.read());
+	switch (controlUnit->state){
+		case 1:
+			break;
+		case 2:
+			break;
+		case 4:
+			break;
 	}
-	else{ //ler da memoria e colocar em DR
-		dRinSignal.write(memoryDataInput.read());
-	}
+	//writeMemory.write(writeMemorySignal.read());
 }
 

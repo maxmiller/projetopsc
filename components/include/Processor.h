@@ -23,11 +23,10 @@ SC_MODULE(Processor){
 	sc_out<bool> writeMemory; // 0 para read, 1 para write //3
 
 	//! se conecta com a saída de DR
-	sc_inout<sc_int<WORD_SIZE> > memoryData; //4
+	sc_out<sc_int<WORD_SIZE> > memoryDataOutput; //4
 	//! se conecta com a saída de AR
 	sc_out<sc_int<WORD_SIZE> > memoryAddress; //5
 
-	sc_signal<bool> writeMemorySignal;
 
 	//registradores
 	RegisterAssyncReset *RA;
@@ -54,10 +53,21 @@ SC_MODULE(Processor){
 	sc_signal<sc_int<WORD_SIZE> > muxRbOutSignal;
 	sc_signal<sc_int<WORD_SIZE> > muxRbSelSignal;
 
+	Multiplexer *dRinMux;
+	sc_signal<sc_int<WORD_SIZE> > ulaDemux_to_dRinMux_signal;
+	sc_signal<sc_int<WORD_SIZE> > dRinMuxSelSignal;
+	
+
+
+
 	Demultiplexer *ulaOutputDemultiplexer;
 	sc_signal<sc_int<WORD_SIZE> > demuxUlaInSignal;
 	sc_signal<sc_int<WORD_SIZE> > demuxUlaOutSignal;
 	sc_signal<sc_int<WORD_SIZE> > demuxUlaSelSignal;
+	
+	Demultiplexer *dRoutDemux;
+	sc_signal<sc_int<WORD_SIZE> > ulaMux_to_dRoutMux_signal;
+	sc_signal<sc_int<WORD_SIZE> > dRoutDemuxSelSignal;
 
 	//ula
 	ULA *ula;
@@ -95,5 +105,6 @@ SC_MODULE(Processor){
 	SC_CTOR(Processor);
 
 	void processorBehavior();
+	void processorBehavior2();
 };
 #endif

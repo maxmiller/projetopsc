@@ -6,7 +6,7 @@
 #define RF_SIZE 6 //numero de registradores no RegisterFile
 
 typedef enum UlaOperation_{
-	ulaOperation_add,
+	ulaOperation_add = 1,
 	ulaOperation_and,
 	ulaOperation_multiply,
 	ulaOperation_inc,

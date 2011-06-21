@@ -11,10 +11,10 @@ SC_MODULE (ULA) {
 	sc_out<sc_int<WORD_SIZE> > ulaOut;
 	sc_out<bool> ulaStatus;
 
-	void ULABehaviour();
+	void ULABehavior();
 
 	SC_CTOR(ULA){
-		SC_METHOD(ULABehaviour);
+		SC_METHOD(ULABehavior);
 		sensitive << opA << opB << opSel;
 	}
 

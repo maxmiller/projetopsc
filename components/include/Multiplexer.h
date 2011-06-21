@@ -12,11 +12,11 @@ SC_MODULE (Multiplexer) {
 
 	int numInputs;
 
-	void MultiplexerBehaviour();
+	void multiplexerBehavior();
 
 	SC_HAS_PROCESS (Multiplexer);
 	Multiplexer(sc_module_name name, int numInputs) : sc_module(name){
-		SC_METHOD(MultiplexerBehaviour);
+		SC_METHOD(multiplexerBehavior);
 		sensitive << sel;
 		inputs = new sc_in<sc_int<WORD_SIZE> >[numInputs];
 		this->numInputs = numInputs;

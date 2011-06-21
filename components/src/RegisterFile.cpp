@@ -1,9 +1,11 @@
 #include "RegisterFile.h"	
 
 void RegisterFile::RegisterFileBehaviour(){
-	if(!rwBit)
+	if(!rwBit){
 		out = registers[sel.read().to_int()];
-	else
+	}
+	else{
 		registers[sel.read().to_int()] = in;
+	}
 }
 
