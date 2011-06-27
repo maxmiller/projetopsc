@@ -1,13 +1,11 @@
 
 #includes do system-c
-INCLUDES=-I../../systemc-2.2.0/include/ \
-				 -I../components/include
+INCLUDES=-I../../../systemc-2.2.0//include/ -I../../components/include -I./
 
-COMPONENT_NAME=processor
+COMPONENT_NAME=processorTB
 
 #libs do system-c
-LDFLAGS=-L../../systemc-2.2.0/lib-linux -lsystemc\
-				-L../components/lib -lcomponents
+LDFLAGS=-L../../../systemc-2.2.0/lib-linux -L../../components/lib -lcomponents -lsystemc
 CPPFLAGS=-Wall -fPIC $(INCLUDES)
 
 SRCS=$(shell find -name '*.cpp')
@@ -16,8 +14,7 @@ OBJS=$(SRCS:.cpp=.o)
 all: $(OBJS) executable
 
 executable:
-	@mkdir -p bin
-	  $(CXX) -o ./bin/$(COMPONENT_NAME) $(OBJS) $(LDFLAGS) -lpthread -lm
+	  $(CXX) -o $(COMPONENT_NAME) $(OBJS) $(LDFLAGS) -lpthread -lm -ggdb
 
 cleanobjs:
 	rm -f $(OBJS)

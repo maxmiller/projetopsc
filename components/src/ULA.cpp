@@ -1,6 +1,6 @@
 #include "ULA.h"
 
-void ULA::ULABehaviour(){
+void ULA::ULABehavior(){
 	switch(opSel.read().to_int()){
 		case ulaOperation_add: //sum A + B
 			ulaOut = opA.read() + opB.read();

@@ -26,7 +26,6 @@ SC_MODULE (RegisterFile) {
 		SC_CTOR(RegisterFile){
 			SC_METHOD(RegisterFileBehaviour);
 			sensitive << clock.pos();
-			sensitive << sel;
 		}
 };
 

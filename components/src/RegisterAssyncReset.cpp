@@ -6,7 +6,7 @@ void RegisterAssyncReset::RegisterBehaviour(){
 	if(reset_val){ // if reset == true reset output
 		internalData = 0;
 	}
-	else if(dataIn.read() && load){ //else loads the input to de output
+	else if(load){ //else loads the input to de output
 		internalData = dataIn;
 	}
 	dataOut.write(internalData);

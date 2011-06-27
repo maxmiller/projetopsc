@@ -14,10 +14,8 @@ SC_MODULE(Memory) {
 		sc_int<WORD_SIZE> mem[MEMORY_SIZE];
 	public:
 		void t_sync_mem();
-
-		SC_CTOR(Memory) {
-			SC_CTHREAD(t_sync_mem, clk.pos());
-		}
+		SC_HAS_PROCESS (Memory);
+		Memory(sc_module_name name, sc_int<WORD_SIZE> *inValues=NULL, int numValues=0);
 };
 
 #endif
