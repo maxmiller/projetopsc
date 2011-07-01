@@ -2,6 +2,7 @@ require 'rexml/document'
 include REXML
 
 @xml = nil
+@constructor = ""
 
 def readXML 
   file = File.open('processor.xml')
@@ -9,9 +10,16 @@ def readXML
   file.close
 end
 
+def readConstructor(variable,typeVariable)
+    @constructor.concat(variable)
+    @constructor.concat(" = new "+typeVariable)
+    @constructor.concat("(\""+variable+"\")\n")
+end
+
 def readRegister
   regS = "//Conjunto de registradores \n"
   @xml.elements.each('//registers/register') do |register|
+    readConstructor(register.text,register.attributes['type'])
     regS.concat(register.attributes['type'])
     if register.attributes['style']=='pointer'
       regS.concat(' *')
@@ -25,6 +33,7 @@ end
 def readRegisterFile
   regS = "//Conjunto de registerFile \n"
   @xml.elements.each('//registersfiles/registerfile') do |register|
+    readConstructor(register.text,register.attributes['type'])
     regS.concat(register.attributes['type'])
     if register.attributes['style']=='pointer'
       regS.concat(' *')
@@ -38,6 +47,7 @@ end
 def readMultiplexer
   multiplexer = "//Conjunto de registerFile \n"
   @xml.elements.each('//multiplexers/multiplexer') do |x|
+    readConstructor(x.text,x.attributes['type'])
     multiplexer.concat(x.attributes['type'])
     if x.attributes['style']=='pointer'
       multiplexer.concat(' *')
@@ -51,6 +61,7 @@ end
 def readDemultiplexer
   demultiplexer = "//Conjunto de registerFile \n"
   @xml.elements.each('//demultiplexers/demultiplexer') do |x|
+    readConstructor(x.text,x.attributes['type'])
     demultiplexer.concat(x.attributes['type'])
     if x.attributes['style']=='pointer'
       demultiplexer.concat(' *')
@@ -64,6 +75,7 @@ end
 def readULA
   ula = "//Conjunto de registerFile\n"
   @xml.elements.each('//ulas/ula') do |x|
+    readConstructor(x.text,x.attributes['type'])
     ula.concat(x.attributes['type'])
     if x.attributes['style']=='pointer'
       ula.concat(' *')
@@ -77,6 +89,7 @@ end
 def readControlUnit
   controlunit = "//Conjunto de registerFile \n"
   @xml.elements.each('//controlunits/controlunit') do |x|
+    readConstructor(x.text,x.attributes['type'])
     controlunit.concat(x.attributes['type'])
     if x.attributes['style']=='pointer'
       controlunit.concat(' *')
@@ -148,10 +161,20 @@ def readModel
   lines
 end
 
+def readModelMain
+  lines = '';
+  File.open('model.cpp','r') do |l|
+    while line = l.gets
+      lines.concat(line)
+    end
+  end
+  lines
+end
+
 def writeProcessor
-  processor = File.open('Processor_gen.h','wb')
+  processor = File.open('Processor.h','wb')
   content_model = readModel
-  readR = readRegister
+  #readR = readRegister
   content_model =  content_model.gsub('{register}',readRegister)
   content_model =  content_model.gsub('{registerfile}',readRegisterFile)
   content_model =  content_model.gsub('{multiplexer}',readMultiplexer)
@@ -161,11 +184,28 @@ def writeProcessor
   content_model =  content_model.gsub('{signal}',readSignal)
   content_model =  content_model.gsub('{input}',readInput)
   content_model =  content_model.gsub('{output}',readOutput)
+  content_model =  content_model.gsub('{constructor}',@constructor)
+  
   puts content_model
   processor.write(content_model.to_s)
   processor.close
 end
 
-readXML
-writeProcessor
+def writeProcessorMain
+  processor = File.open('Processor.cpp','wb')
+  content_model = readModelMain
+  content_model =  content_model.gsub('{constructor}',@constructor)
+  puts content_model
+  processor.write(content_model.to_s)
+  processor.close
+end
+
+def writeProcessorDoc
+    readXML
+    writeProcessor
+    writeProcessorMain
+end
+#readXML
+#writeProcessor
 #readRegister
+writeProcessorDoc
