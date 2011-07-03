@@ -113,9 +113,16 @@ SC_MODULE (ControlUnit) {
 		 */
 		bool processMemoryInstruction();
 
+		//!reseta todas as saídas de load
+		/*!
+		 * Seta 0 em rfReadWriteBit, writeMemory, loadXX, coloca o dRinMuxSel = 1 e dRoutDemuxSel = 0
+		 */
 		void resetAllLoads();
 
+		//!utilitária para incrementar PC
 		void incrementPC();
+
+		//!utilitária para carregar AR em PC
 		void loadsARWithPc();
 
 		SC_CTOR(ControlUnit){
