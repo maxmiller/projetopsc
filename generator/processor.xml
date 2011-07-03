@@ -1,0 +1,67 @@
+<processor>
+	<registers>
+		<register type='RegisterAssyncReset' style='pointer'>RA</register> 
+		<register type='RegisterAssyncReset' style='pointer'>RB</register>
+		<register type='RegisterAssyncReset' style='pointer'>AR</register>
+		<register type='RegisterAssyncReset' style='pointer'>DR</register>
+		<register type='RegisterAssyncReset' style='pointer'>PC</register>
+		<register type='RegisterAssyncReset' style='pointer'>IR</register>
+	</registers>
+	<registersfiles>
+		<registerfile type='RegisterFile' style='pointer'>registerFile</registerfile>
+	</registersfiles>
+	<multiplexers>
+	    <multiplexer type='Multiplexer' style='pointer'>raMultiplexer</multiplexer>
+	    <multiplexer type='Multiplexer' style='pointer'>rbMultiplexer</multiplexer>
+	</multiplexers>
+	<demultiplexers>
+		<demultiplexer type='Demultiplexer' style='pointer'>ulaOutputDemultiplexer</demultiplexer>
+	</demultiplexers>
+	<ulas>
+		<ula type='ULA' style='pointer'>ula</ula>
+	</ulas>
+	<controlunits>
+		<controlunit type='ControlUnit' style='pointer'>controlunit</controlunit>
+	</controlunits>
+	<signals>
+	    <signal type='sc_int' length='WORD_SIZE'>rFSelSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>rFoutSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>rFinSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>muxRaOutSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>muxRbSelSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>demuxUlaInSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>demuxUlaSelSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>demuxUlaOutSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>ulaOpSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>rAoutSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>rBoutSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>aRoutSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>dRoutSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>pCoutSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>iRoutSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>rAinSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>rBinSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>aRinSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>dRinSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>pCinSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>iRinSignal</signal>
+		<signal type='bool' length='0'>ulaStatusSignal</signal>
+		<signal type='bool' length='0'>writeMemorySignal</signal>
+		<signal type='bool' length='0'>rALoadSignal</signal>
+		<signal type='bool' length='0'>rBLoadSignal</signal>
+		<signal type='bool' length='0'>aRLoadSignal</signal>
+		<signal type='bool' length='0'>dRLoadSignal</signal>
+		<signal type='bool' length='0'>pCLoadSignal</signal>
+		<signal type='bool' length='0'>iRLoadSignal</signal>
+	</signals>
+	<inputs>
+		<input type='sc_int' length='WORD_SIZE'>memmoryDataInput</input>
+		<input type='bool' length='0'>clock</input>
+		<input type='bool' length='0'>resetRegisters</input>
+	</inputs>
+	<outputs>
+		<output type='sc_int' length='WORD_SIZE'>memoryData</output>
+		<output type='bool' length='WORD_SIZE'>writeMemory</output>
+		<output type='sc_int' length='WORD_SIZE'>memoryAddress</output>
+	</outputs>
+</processor>
