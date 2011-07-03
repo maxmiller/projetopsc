@@ -19,7 +19,7 @@ Implementamos as seguintes instruções no formato 16 bits type(2), op(5), dest(
 
 -Intruçoes Implementadas
 tipo 1 Operação de Registradores
-Op(5), dest(3), src1(3), scr2(3)
+type(2), Op(5), dest(3), src1(3), scr2(3)
 Op = 0 => RF [dest] = RF[src1] + RF[src2]
 Op = 1 => RF [dest] = RF[src1] x RF[src2]
 Op = 2 => RF [dest] = RF[src1] and RF(src2]
@@ -30,7 +30,7 @@ Op(5), dest(3), src1(3), scr2(3), constante(16)
 Op = 5 => RF [des] = constante
 
 tipo 2 Operação de Memória
-Op(5), dest(3), src1(3), scr2(3), endereço(16)
+type(2), Op(5), dest(3), src1(3), scr2(3), endereço(16)
 Op = 0 => RF [dest] = endereço
 Op = 1 => RF [dest] = Mem[endereço]
 Op = 2 => RF [dest] = Mem[Mem[endereço]]
@@ -39,7 +39,7 @@ Op = 4 => Mem [Mem[endereço]] = RF[scr1]
 
 
 tipo 3 Operação de controle de fluxo
-Op(5), dest(3), src1(3), scr2(3), endereço(16)
+type(2), Op(5), dest(3), src1(3), scr2(3), endereço(16)
 Op = 0 => PC = endereço
 Op = 1 => se statusBit PC = endereço senão PC = PC + 1
 
