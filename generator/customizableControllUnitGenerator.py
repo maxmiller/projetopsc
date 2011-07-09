@@ -5,12 +5,12 @@ import os
 #TODO gerar expandir macro
 def getMacroMicroinstructions(microInstructionMacro):
 	if microInstructionMacro == "loadsARWithPc":
-		return "ulaOp 5	ulaInAMuxSel 2 ulaOutDemuxSel 0 writeMemory 0 dRinMuxSel 1 dRoutDemuxSel 0 loadRA 1 wait 1 loadAR 1 wait 1 wait 1 loadDR 1 wait 1"
+		return "ulaOp 5 ulaInAMuxSel 2 ulaOutDemuxSel 0 writeMemory 0 dRinMuxSel 1 dRoutDemuxSel 0 loadRA 1 wait 1 loadAR 1 wait 1 wait 1 loadDR 1 wait 1"
 	if microInstructionMacro == "resetAllLoads":
-		 return "rfReadWriteBit = 0 writeMemory 0 loadRA 0 loadRB 0 loadIR 0 loadAR 0 loadPC 0 loadDR 0 dRinMuxSel 1 dRoutDemuxSel 0"
+		 return "rfReadWriteBit 0 writeMemory 0 loadRA 0 loadRB 0 loadIR 0 loadAR 0 loadPC 0 loadDR 0 dRinMuxSel 1 dRoutDemuxSel 0"
 	if microInstructionMacro == "incrementPC":
-		resetAllLoads = "rfReadWriteBit = 0 writeMemory 0 loadRA 0 loadRB 0 loadIR 0 loadAR 0 loadPC 0 loadDR 0 dRinMuxSel 1 dRoutDemuxSel 0"
-		return resetAllLoads + " ulaOp 4 ulaInAMuxSel 2 ulaOutDemuxSel 2 loadRA 1 wait 1 loadPC = 1 wait 1"
+		resetAllLoads = "rfReadWriteBit 0 writeMemory 0 loadRA 0 loadRB 0 loadIR 0 loadAR 0 loadPC 0 loadDR 0 dRinMuxSel 1 dRoutDemuxSel 0"
+		return resetAllLoads + " ulaOp 4 ulaInAMuxSel 2 ulaOutDemuxSel 2 loadRA 1 wait 1 loadPC 1 wait 1"
 	return None
 
 	
@@ -31,7 +31,7 @@ def generateCode(fsm_set):
 	for fsmIt in fsm_set:
 		instructionName = fsmIt["name"]
 		fsm = fsmIt["fsm"]
-		codeFile.write("{ /*microinstructions for " + instructionName + "begin*/\n")
+		codeFile.write("{ /*microinstructions for " + instructionName + "begin */\n")
 		codeFile.write("vector<string > microInstructions;\n")
 		s = fsm["initialState"]
 		s_ = s["nextState"]
@@ -56,7 +56,7 @@ def generateCode(fsm_set):
 			s_ = s["nextState"]
 
 		codeFile.write("stateOutputMap[\"" + instructionName + "\"] = microInstructions;\n")
-		codeFile.write("} /*microinstructions for " + instructionName + "end*/\n")
+		codeFile.write("} /*microinstructions for " + instructionName + " end*/\n")
 	codeFile.close()
 
 print ("running")
