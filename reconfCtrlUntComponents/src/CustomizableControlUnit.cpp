@@ -13,21 +13,38 @@ CustomizableControlUnit::CustomizableControlUnit(sc_module_name name, std::vecto
 }
 
 void CustomizableControlUnit::customizableControlUnitBehavior(){
-	int type = iRInput.read().range(15,14);
-	int op = iRInput.read().range(13,9);
-	int dest = iRInput.read().range(8,6);
-	int src1 = iRInput.read().range(5,3);
-	int src2 = iRInput.read().range(2,0);
 
-	stringstream aux;
-	aux<<type<<","<<op;
-	
-	if(stateOutputMap.count(aux.str()) > 0){
-		vector<std::string> microInstructions = stateOutputMap[aux.str()];
-		executeMicroInstructions(microInstructions, op, dest, src1, src2);
-	}
-	else{
-		cout<<"IR has a invalid value for this control unit"<<endl;
+	while(true){
+		if(stateOutputMap.count("fetchInstruction") > 0){
+			vector<std::string> microInstructions = stateOutputMap["fetchInstruction"];
+			executeMicroInstructions(microInstructions, 0, 0, 0, 0);
+		}
+		else
+			cout<<"Cannot execute a control unit without fetchInstrucion procedure"<<endl;
+
+		int type = iRInput.read().range(15,14);
+		int op = iRInput.read().range(13,9);
+		int dest = iRInput.read().range(8,6);
+		int src1 = iRInput.read().range(5,3);
+		int src2 = iRInput.read().range(2,0);
+
+		cout<<"executing instruction "<<endl;
+		cout<<"type:"<<type<<endl;
+		cout<<"op:"<<op<<endl;
+		cout<<"dest:"<<dest<<endl;
+		cout<<"src1:"<<src1<<endl;
+		cout<<"src2:"<<src2<<endl;
+
+		stringstream aux;
+		aux<<type<<"_"<<op;
+
+		if(stateOutputMap.count(aux.str()) > 0){
+			vector<std::string> microInstructions = stateOutputMap[aux.str()];
+			executeMicroInstructions(microInstructions, op, dest, src1, src2);
+		}
+		else{
+			cout<<"IR has a invalid value for this control unit"<<endl;
+		}
 	}
 }
 
@@ -36,9 +53,11 @@ void CustomizableControlUnit::executeMicroInstructions(vector<std::string> instr
 	vector<std::string >::iterator microInstructionIt = instructions.begin();
 	for(;microInstructionIt != instructions.end(); microInstructionIt++){
 		//intera em todas as saídas para essa instrução seta cada uma delas
-		map<string, int > stateCommands = parseInstruction(*microInstructionIt);
-		map<string, int >::iterator commandsIt = stateCommands.begin();
+		//cout<<"parsing instruction "<<*microInstructionIt<<endl;
+		vector< pair<string, int> > stateCommands = parseInstruction(*microInstructionIt, op, dest, src1, src2);
+		vector< pair<string, int> >::iterator commandsIt = stateCommands.begin();
 		for(;commandsIt != stateCommands.end(); commandsIt ++){
+			cout<<"executing "<<commandsIt->first <<" "<<commandsIt->second<<endl;
 			if(commandsIt->first == "wait")
 				wait(commandsIt->second);
 			else{
@@ -58,39 +77,69 @@ void CustomizableControlUnit::executeMicroInstructions(vector<std::string> instr
 vector<string> tokenize(string str){
 	string strR = "";
 
-	string::size_type lastPos = str.find_first_not_of(" ", 0);
-	string::size_type pos = str.find_first_of(" ", lastPos);
+	string::size_type next = str.find_first_of(" ");
 
 	vector<string> retVector;
+	string aux = str;
+	string value = "";
 
-	while (string::npos != pos || string::npos != lastPos) {
-		retVector.push_back(str.substr(lastPos, pos - lastPos));
-		lastPos = str.find_first_not_of(" ", pos);
-		pos = str.find_first_of(" ", lastPos);
+	while (next != string::npos) {
+		value = aux.substr(0,next);
+
+		aux = aux.substr(next+1,aux.size());
+		retVector.push_back(value);
+		next = aux.find_first_of(" ");
+		if(next == string::npos)
+			retVector.push_back(aux);
 	}
 	return retVector;
 }
 
-map<string, int > CustomizableControlUnit::parseInstruction(string instruction){
+vector< pair<string, int> > CustomizableControlUnit::parseInstruction(string instruction, int op, int dest, int src1, int src2){
 	vector<string> aux = tokenize(instruction);
 	vector<string>::iterator it;
-	map<string, int > retMap;
+	vector< pair<string, int> > retVector;
 	int output;
 	string port;
 	bool portAquired = false;
 
+	//cout<<"vector got from tokenize:"<<endl;
+	//for(it = aux.begin(); it != aux.end(); it ++){
+	//	cout<<*it<<" ";
+	//}
+	//cout<<endl;
+	
+	pair<string, int> val;
 	for(it = aux.begin(); it != aux.end(); it ++){
 		if(!portAquired){
 			port = *it;
 			portAquired = true;
 		}
 		else{
-			output = atoi((*it).c_str());
-			retMap[port] = output;
+			if(*it == "op"){
+				output = op; 
+			}
+			else if(*it == "dest"){
+				cout<<"\n\nput output eq dest\n\n"<<endl;
+				output = dest; 
+			}
+			else if(*it == "src1"){
+				output = src1;
+			}
+			else if(*it == "src2"){
+				output = src2; 
+			}
+			else{
+				output = atoi((*it).c_str());
+			}
+
+			val.first = port;
+			val.second = output;
+			retVector.push_back(val);
 			portAquired = false;
 		}
 	}
-	return retMap;
+	return retVector;
 }
 
 void CustomizableControlUnit::assign(string outputName, sc_signal< sc_int<WORD_SIZE> > *signal){

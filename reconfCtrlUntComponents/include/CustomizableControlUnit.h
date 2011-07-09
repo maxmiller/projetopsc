@@ -32,9 +32,9 @@ SC_MODULE (CustomizableControlUnit) {
 		int instructionSubstate; //controls each instruction individual substate
 	public:
 		void customizableControlUnitBehavior();
-		//!processa instrução qualquer e a subdivide em cada um dos tipos
+		//!processa instrução
 		/*!
-		 * executa todas as micro instruções do vetor
+		 * executa todas as instruções no vetor
 		 * \param tinstructions o vetor contendo as instruções
 		 * \param op o valor de op extraído de IR
 		 * \param dest o valor de dest extraído de IR
@@ -43,7 +43,18 @@ SC_MODULE (CustomizableControlUnit) {
 		 */
 		void executeMicroInstructions(std::vector<std::string> instructions, int op, int dest, int src1, int src2);
 
-		std::map<std::string, int > parseInstruction(std::string instruction);
+		//!processa um conjunto de strings que representam as micro instruções
+		/*!
+		 * processa as strings de mircor instruções e as transforma em uma 
+		 * map<string,valor> o primeiro elemento representa a saída o segundo
+		 * elemento representa o valor daquela saída
+		 * \param tinstructions o vetor contendo as micro instruções
+		 * \param op o valor de op extraído de IR
+		 * \param dest o valor de dest extraído de IR
+		 * \param src1 o valor de src1 extraído de IR
+		 * \param src2 o valor de src2 extraído de IR
+		 */
+		std::vector< std::pair<std::string, int> > parseInstruction(std::string instruction,int op, int dest, int src1, int src2);
 
 		//!atribui um signal a um output
 		/*!
