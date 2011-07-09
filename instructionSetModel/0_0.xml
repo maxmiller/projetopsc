@@ -166,7 +166,7 @@
 <position x="930.0" y="210.0"/>
 </graphics>
 <name>
-<value>ulaOutDemuxSel 4 rfReadWriteBit = 1</value>
+<value>ulaOutDemuxSel 4 rfReadWriteBit 1</value>
 <graphics>
 <offset x="-5.0" y="35.0"/>
 </graphics>
