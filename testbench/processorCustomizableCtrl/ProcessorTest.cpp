@@ -153,13 +153,14 @@ ProcessorTest::ProcessorTest(sc_module_name name): sc_module(name){
 	inValues[2] = (type, op, dest, src1, src2); //RF [dest] = CTE
 	inValues[3] = value;
 
+/*
 	type = 3;
 	op = ulaOperation_lt;
 	dest = 0;
 	src1 = 2;
 	src2 = 1;
 	inValues[4] = (type, op, dest, src1, src2); // statusBit = RF[src1] op RF[src2]
-
+*/
 /*operacoes de controle de fluxo*/
 /*
 	type = 2;
@@ -170,7 +171,7 @@ ProcessorTest::ProcessorTest(sc_module_name name): sc_module(name){
 	address = 8;
 	inValues[5] = (type, op, dest, src1, src2); //if statusBit PC = address else pc = pc + 1
 	inValues[6] = address;
-*/
+
 	type = 2;
 	op = 0;
 	dest = 1;
@@ -179,7 +180,7 @@ ProcessorTest::ProcessorTest(sc_module_name name): sc_module(name){
 	address = 8;
 	inValues[5] = (type, op, dest, src1, src2); //PC = address
 	inValues[6] = address;
-
+*/
 
 	memory = new Memory("Memory", inValues, inSize);
 	memory->clk(clock);
