@@ -61,6 +61,42 @@ gerar um diagrama do processador no simulink
 
 vamos precisar de um gerador de CDFG de alguma forma
 
+9 de julho
+
+termidado o gerador de código automátio para a unidade de controle customizável
+
+atualmente estamos usando o pipe disponível em: http://pipe2.sourceforge.net/
+para gerar redes de petri que são interpretadas como máquinas de estado para nossa solução atual
+
+uma vez gerada a rede de petri para uma determinada instrução é necessário salvar o arquivo da rede em algum local. 
+Para usar usar o gerador de código da unidade de controle faça
+python customizableControllUnitGenerator.py <diretorioOndeEstaoAsModelagens>
+
+para uma dada instrução com o formato type(2), Op(5), dest(3), src1(3), scr2(3)
+
+o arquivo relativo aquela instrução pode ter dois nomes:
+type_op.xml => referindo-se a instrução com type = <type> e op = <op>
+type_all.xml => referindose-se a uma instrução com type = <type> sem que importem os valores de op (por exemplo instruções RF[src1] op RF[src2])
+
+a rede de petri deve ser modelada com a seguinte estrutura:
+Lugares: serão os estados de nossa máquina de estados
+Nomes dos lugares => microInstruções que devem ser realizadas pela unidade de controle nesse estado
+ex:
+P0 = rfSel dest loadsARWithPc
+P1 = resetAllLoads
+P2 = incrementPC
+P3 = resetAllLoads
+P4 = ulaOp 5 ulaInAMuxSel 1 loadRA 1
+P5 = wait 1
+
+Transições: as transições não fazem diferença para nós, sua semântica apenas significa a ligação entre um estado e seu proximo.
+
+Valores dos lugares: Um lugar com valor inicial igual a 1 deve ser setado indicando que ele é o estado inicial da máquina de estados.
+
+Para testes estamos usando o processador anteriormente gerado, atualmente apenas uma instrução foi modelada
+
+RF [des] = constante
+
 Data de Entrega do processador:
 sexta, dia 18 de junho
 
