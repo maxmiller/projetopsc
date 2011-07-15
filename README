@@ -97,6 +97,11 @@ Para testes estamos usando o processador anteriormente gerado, atualmente apenas
 
 RF [des] = constante
 
+15 de julho
+
+Gerador de código finalizado, para rodar o gerador rodar o script
+ generator.sh onde será executado oscript python, e posteriormente o script ruby.
+Depois podemos criar uma make para rodar o gerador.
 Data de Entrega do processador:
 sexta, dia 18 de junho
 
