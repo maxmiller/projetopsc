@@ -1,67 +1,348 @@
+
 <processor>
-	<registers>
-		<register type='RegisterAssyncReset' style='pointer'>RA</register> 
-		<register type='RegisterAssyncReset' style='pointer'>RB</register>
-		<register type='RegisterAssyncReset' style='pointer'>AR</register>
-		<register type='RegisterAssyncReset' style='pointer'>DR</register>
-		<register type='RegisterAssyncReset' style='pointer'>PC</register>
-		<register type='RegisterAssyncReset' style='pointer'>IR</register>
-	</registers>
-	<registersfiles>
-		<registerfile type='RegisterFile' style='pointer'>registerFile</registerfile>
-	</registersfiles>
-	<multiplexers>
-	    <multiplexer type='Multiplexer' style='pointer'>raMultiplexer</multiplexer>
-	    <multiplexer type='Multiplexer' style='pointer'>rbMultiplexer</multiplexer>
-	</multiplexers>
-	<demultiplexers>
-		<demultiplexer type='Demultiplexer' style='pointer'>ulaOutputDemultiplexer</demultiplexer>
-	</demultiplexers>
-	<ulas>
-		<ula type='ULA' style='pointer'>ula</ula>
-	</ulas>
-	<controlunits>
-		<controlunit type='ControlUnit' style='pointer'>controlunit</controlunit>
-	</controlunits>
-	<signals>
-	    <signal type='sc_int' length='WORD_SIZE'>rFSelSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>rFoutSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>rFinSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>muxRaOutSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>muxRbSelSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>demuxUlaInSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>demuxUlaSelSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>demuxUlaOutSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>ulaOpSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>rAoutSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>rBoutSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>aRoutSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>dRoutSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>pCoutSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>iRoutSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>rAinSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>rBinSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>aRinSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>dRinSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>pCinSignal</signal>
-		<signal type='sc_int' length='WORD_SIZE'>iRinSignal</signal>
-		<signal type='bool' length='0'>ulaStatusSignal</signal>
-		<signal type='bool' length='0'>writeMemorySignal</signal>
-		<signal type='bool' length='0'>rALoadSignal</signal>
-		<signal type='bool' length='0'>rBLoadSignal</signal>
-		<signal type='bool' length='0'>aRLoadSignal</signal>
-		<signal type='bool' length='0'>dRLoadSignal</signal>
-		<signal type='bool' length='0'>pCLoadSignal</signal>
-		<signal type='bool' length='0'>iRLoadSignal</signal>
-	</signals>
-	<inputs>
-		<input type='sc_int' length='WORD_SIZE'>memmoryDataInput</input>
-		<input type='bool' length='0'>clock</input>
-		<input type='bool' length='0'>resetRegisters</input>
-	</inputs>
-	<outputs>
-		<output type='sc_int' length='WORD_SIZE'>memoryData</output>
-		<output type='bool' length='WORD_SIZE'>writeMemory</output>
-		<output type='sc_int' length='WORD_SIZE'>memoryAddress</output>
-	</outputs>
+    <components>
+        <component type='RegisterAssyncReset' style='pointer' value='RA'></component> 
+        <component type='RegisterAssyncReset' style='pointer' value='RB'></component>
+        <component type='RegisterAssyncReset' style='pointer' value='AR'></component>
+        <component type='RegisterAssyncReset' style='pointer' value='DR'></component>
+        <component type='RegisterAssyncReset' style='pointer' value='PC'></component>
+        <component type='RegisterAssyncReset' style='pointer' value='IR' ></component>
+        <component type='RegisterFile' style='pointer' value='registerFile'></component>
+        <component type='Multiplexer' style='pointer' value='raMultiplexer' >
+            <parameter>5</parameter>
+        </component>
+        <component type='Multiplexer' style='pointer' value='dRinMux' >
+            <parameter>2</parameter>
+        </component>
+        <component type='Demultiplexer' style='pointer' value='dRoutDemux' >
+            <parameter>2</parameter>
+        </component>
+		
+        <component type='Multiplexer' style='pointer' value='rbMultiplexer'>
+            <parameter>5</parameter>
+        </component>
+        <component type='Demultiplexer' style='pointer' value='ulaOutputDemultiplexer'>
+            <parameter>5</parameter>
+        </component>
+        <component type='ULA' style='pointer' value='ula'>ula</component>
+        <component type='CustomizableControlUnit' style='pointer' value='controlunit'>
+            <parameter>outputNames</parameter>
+            <parameter>stateOutputMap</parameter>
+        </component>
+    </components>
+    <signals>
+        <signal type='sc_int' length='WORD_SIZE'>rFSelSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>rFoutSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>rFinSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>muxRaOutSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>muxRbSelSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>demuxUlaInSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>demuxUlaSelSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>demuxUlaOutSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>ulaOpSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>rAoutSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>rBoutSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>aRoutSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>dRoutSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>pCoutSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>iRoutSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>rAinSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>rBinSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>aRinSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>dRinSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>pCinSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>iRinSignal</signal>
+        <signal type='bool' length='0'>ulaStatusSignal</signal>
+        <signal type='bool' length='0'>writeMemorySignal</signal>
+        <signal type='bool' length='0'>rALoadSignal</signal>
+        <signal type='bool' length='0'>rBLoadSignal</signal>
+        <signal type='bool' length='0'>aRLoadSignal</signal>
+        <signal type='bool' length='0'>dRLoadSignal</signal>
+        <signal type='bool' length='0'>pCLoadSignal</signal>
+        <signal type='bool' length='0'>iRLoadSignal</signal>
+    </signals>
+    <inputs>
+        <input type='sc_int' length='WORD_SIZE'>memmoryDataInput</input>
+        <input type='bool' length='0'>clock</input>
+        <input type='bool' length='0'>resetRegisters</input>
+    </inputs>
+    <outputs>
+        <output type='sc_int' length='WORD_SIZE'>memoryData</output>
+        <output type='bool' length='WORD_SIZE'>writeMemory</output>
+        <output type='sc_int' length='WORD_SIZE'>memoryAddress</output>
+    </outputs>
+    <processorsignals>
+        <psignals variable='RA'>
+            <psignal internal='clk'>clock</psignal>
+        </psignals>
+        <psignals variable='RA'>
+            <psignal internal='dataOut'>rAoutSignal</psignal>
+        </psignals>
+        <psignals variable='RA'>
+            <psignal internal='load'>rALoadSignal</psignal>
+        </psignals>
+        <psignals variable='RA'>
+            <psignal internal='reset'>resetRegister</psignal>
+        </psignals>
+        <psignals variable='RA'>
+            <psignal internal='dataIn'>muxRaOutSignal</psignal>
+        </psignals>
+
+        <psignals variable='RB'>
+            <psignal internal='clk'>clock</psignal>
+        </psignals>
+        <psignals variable='RB'>
+            <psignal internal='dataOut'>rBoutSignal</psignal>
+        </psignals>
+        <psignals variable='RB'>
+            <psignal internal='load'>rBLoadSignal</psignal>
+        </psignals>
+        <psignals variable='RB'>
+            <psignal internal='reset'>resetRegister</psignal>
+        </psignals>
+        <psignals variable='RB'>
+            <psignal internal='dataIn'>muxRbOutSignal</psignal>
+        </psignals>
+         
+        <psignals variable='AR'>
+            <psignal internal='clk'>clock</psignal>
+        </psignals>
+        <psignals variable='AR'>
+            <psignal internal='dataOut'>aRoutToMemorySignal</psignal>
+        </psignals>
+        <psignals variable='AR'>
+            <psignal internal='dataIn'>aRinSignal</psignal>
+        </psignals>
+        <psignals variable='AR'>
+            <psignal internal='load'>aRLoadSignal</psignal>
+        </psignals>
+        <psignals variable='AR'>
+            <psignal internal='reset'>resetRegister</psignal>
+        </psignals>
+         
+        <psignals variable='DR'>
+            <psignal internal='clk'>clock</psignal>
+        </psignals>
+        <psignals variable='DR'>
+            <psignal internal='dataOut'>dRoutSignal</psignal>
+        </psignals>
+        <psignals variable='DR'>
+            <psignal internal='dataIn'>dRinSignal</psignal>
+        </psignals>
+        <psignals variable='DR'>
+            <psignal internal='load'>dRLoadSignal</psignal>
+        </psignals>
+        <psignals variable='DR'>
+            <psignal internal='reset'>resetRegister</psignal>
+        </psignals>
+         
+        <psignals variable='dRInMux'>
+            <psignal internal='output'>dRinSignal</psignal>
+        </psignals>
+        <psignals variable='dRInMux'>
+            <psignal internal='inputs[0]'>demuxUlaInSignal</psignal>
+        </psignals>
+        <psignals variable='dRInMux'>
+            <psignal internal='inputs[1]'>memoryDataInput</psignal>
+        </psignals>
+        <psignals variable='dRInMux'>
+            <psignal internal='sel'>dRinMuxSelSignal</psignal>
+        </psignals>
+
+        <psignals variable='dROutDemux'>
+            <psignal internal='input'>dROutSignal</psignal>
+        </psignals>
+        <psignals variable='dROutDemux'>
+            <psignal internal='outputs[0]'>ula_Mux_to_dRoutMux_signal</psignal>
+        </psignals>
+        <psignals variable='dROutDemux'>
+            <psignal internal='outputs[1]'>memoryDataOutput</psignal>
+        </psignals>
+        <psignals variable='dROutDemux'>
+            <psignal internal='sel'>dROutDemuxSelSignal</psignal>
+        </psignals>
+
+        <psignals variable='PC'>
+            <psignal internal='clk'>clock</psignal>
+        </psignals>
+        <psignals variable='PC'>
+            <psignal internal='dataOut'>pCoutSignal</psignal>
+        </psignals>
+        <psignals variable='PC'>
+            <psignal internal='dataIn'>pCinSignal</psignal>
+        </psignals>
+        <psignals variable='PC'>
+            <psignal internal='load'>pCLoadSignal</psignal>
+        </psignals>
+        <psignals variable='PC'>
+            <psignal internal='reset'>resetRegister</psignal>
+        </psignals>
+
+        <psignals variable='IR'>
+            <psignal internal='clk'>clock</psignal>
+        </psignals>
+        <psignals variable='IR'>
+            <psignal internal='dataOut'>iRoutSignal</psignal>
+        </psignals>
+        <psignals variable='IR'>
+            <psignal internal='dataIn'>iRinSignal</psignal>
+        </psignals>
+        <psignals variable='IR'>
+            <psignal internal='load'>iRLoadSignal</psignal>
+        </psignals>
+        <psignals variable='IR'>
+            <psignal internal='reset'>resetRegister</psignal>
+        </psignals>
+		
+        <psignals variable='ula'>
+            <psignal internal='ulaOut'>demuxUlaOutSingal</psignal>
+        </psignals>
+        <psignals variable='ula'>
+            <psignal internal='opsel'>ulaOpSingal</psignal>
+        </psignals>
+        <psignals variable='ula'>
+            <psignal internal='ulaStatus'>ulaStatusSignal</psignal>
+        </psignals>
+        <psignals variable='ula'>
+            <psignal internal='opA'>rAoutSignal</psignal>
+        </psignals>
+        <psignals variable='ula'>
+            <psignal internal='opB'>rBoutSignal</psignal>
+        </psignals>
+        
+        <psignals variable='registerFile'>
+            <psignal internal='clk'>clock</psignal>
+        </psignals>
+        <psignals variable='registerFile'>
+            <psignal internal='sel'>rFSelSignal</psignal>
+        </psignals>
+        <psignals variable='registerFile'>
+            <psignal internal='rwBit'>rFWriteBitSignal</psignal>
+        </psignals>
+        <psignals variable='registerFile'>
+            <psignal internal='out'>rFoutSignal</psignal>
+        </psignals>
+        <psignals variable='registerFile'>
+            <psignal internal='in'>rFinSignal</psignal>
+        </psignals>
+			
+        <psignals variable='raMultiplexer'>
+            <psignal internal='inputs[0]'>aRoutSignal</psignal>
+        </psignals>
+        <psignals variable='raMultiplexer'>
+            <psignal internal='inputs[1]'>ula_Mux_to_dRoutMux_signal</psignal>
+        </psignals>
+        <psignals variable='raMultiplexer'>
+            <psignal internal='inputs[2]'>pCoutSignal</psignal>
+        </psignals>
+        <psignals variable='raMultiplexer'>
+            <psignal internal='inputs[3]'>iRoutSignal</psignal>
+        </psignals>
+        <psignals variable='raMultiplexer'>
+            <psignal internal='inputs[4]'>rFoutSignal</psignal>
+        </psignals>
+        <psignals variable='raMultiplexer'>
+            <psignal internal='sel'>muxRaSelSignal</psignal>
+        </psignals>
+        <psignals variable='raMultiplexer'>
+            <psignal internal='output'>muxRaOutSignal</psignal>
+        </psignals>
+
+        <psignals variable='rbMultiplexer'>
+            <psignal internal='inputs[0]'>aRoutSignal</psignal>
+        </psignals>
+        <psignals variable='rbMultiplexer'>
+            <psignal internal='inputs[1]'>ula_Mux_to_dRoutMux_signal</psignal>
+        </psignals>
+        <psignals variable='rbMultiplexer'>
+            <psignal internal='inputs[2]'>pCoutSignal</psignal>
+        </psignals>
+        <psignals variable='rbMultiplexer'>
+            <psignal internal='inputs[3]'>iRoutSignal</psignal>
+        </psignals>
+        <psignals variable='rbMultiplexer'>
+            <psignal internal='inputs[4]'>rFoutSignal</psignal>
+        </psignals>
+        <psignals variable='rbMultiplexer'>
+            <psignal internal='sel'>muxRbSelSignal</psignal>
+        </psignals>
+        <psignals variable='raMultiplexer'>
+            <psignal internal='output'>muxRbOutSignal</psignal>
+        </psignals>
+
+        <psignals variable='ulaOutputDemultiplexer'>
+            <psignal internal='inputs[0]'>aRoutSignal</psignal>
+        </psignals>
+        <psignals variable='ulaOutputDemultiplexer'>
+            <psignal internal='inputs[1]'>ula_Mux_to_dRintMux_signal</psignal>
+        </psignals>
+        <psignals variable='ulaOutputDemultiplexer'>
+            <psignal internal='inputs[2]'>pCintSignal</psignal>
+        </psignals>
+        <psignals variable='ulaOutputDemultiplexer'>
+            <psignal internal='inputs[3]'>iRinSignal</psignal>
+        </psignals>
+        <psignals variable='ulaOutputDemultiplexer'>
+            <psignal internal='inputs[4]'>rFintSignal</psignal>
+        </psignals>
+        <psignals variable='ulaOutputDemultiplexer'>
+            <psignal internal='sel'>demuxUlaSelSignal</psignal>
+        </psignals>
+		
+        <psignals variable='controlUnit'>
+            <psignal internal='clock'>clock</psignal>
+        </psignals>
+        <psignals variable='controlUnit'>
+            <psignal internal='statusBit'>ulaStatusSignal</psignal>
+        </psignals>
+        <psignals variable='controlUnit'>
+            <psignal internal='iRInput'>iRoutSignal</psignal>
+        </psignals>
+    </processorsignals>
+    <assigns>
+        <assign variable="controlUnit">
+            <parameter internal="loadRA" external="rALoadSignal"/>
+            <parameter internal="loadRB" external="rBLoadSignal"/>
+            <parameter internal="loadIR" external="iRLoadSignal"/>
+            <parameter internal="loadAR" external="aRLoadSignal"/>
+            <parameter internal="loadPC" external="pCLoadSignal"/>
+            <parameter internal="loadDR" external="dRLoadSignal"/>
+            <parameter internal="rfSel" external="rfSelSignal"/>
+            <parameter internal="rfReadWriteBit" external="rfReadWriteBitSignal"/>
+            <parameter internal="ulaInAMuxSel" external="ulaInAMuxSelSignal"/>
+            <parameter internal="ulaInBMuxSel" external="ulaInBMuxSelSignal"/>
+            <parameter internal="ulaOutDemuxSel" external="ulaOutDemuxSelSignal"/>
+            <parameter internal="dRinMuxSel" external="dRinMuxSelSignal"/>
+            <parameter internal="dRoutMuxSel" external="dRoutMuxSelSignal"/>
+            <parameter internal="ulaOp" external="ulaOpSignal"/>
+            <parameter internal="writeMemory" external="writeMemory"/>
+        </assign>
+    </assigns>
+    <vectors name='outputNames'>
+        <vector>ulaOp</vector>
+        <vector>ulaOutDemuxSel</vector>
+        <vector>ulaInAMuxSel</vector>
+        <vector>ulaInBMuxSel</vector>
+        <vector>dRinMuxSel</vector>
+        <vector>dRoutDemuxSel</vector>
+        <vector>rfSel</vector>
+        <vector>rfReadWriteBit</vector>
+        <vector>writeMemory</vector>
+        <vector>loadRA</vector>
+        <vector>loadRB</vector>
+        <vector>loadIR</vector>
+        <vector>loadAR</vector>
+        <vector>loadPC</vector>
+        <vector>loadDR</vector>
+    </vectors>
+    <methods>
+        <method type="SC_METHOD">processorBehavior</method>
+        <method type="SC_METHOD">processorBehavior2</method>
+    </methods>
+    <sensitives>
+        <sensitive> clock.pos()</sensitive>
+        <sensitive> AR->dataOut</sensitive>
+		
+    </sensitives>
+		
 </processor>

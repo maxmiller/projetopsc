@@ -13,27 +13,14 @@
 
 SC_MODULE(Processor){
 
-	//registradores
-	{register}
+	//components
+	{components}
 
-	//register file
-	{registerfile}
-
-	//seletores
-	{multiplexer}
-	{demultiplexer}
-
-	//ula
-	{ula}
+	{signals}
 	
-	//unidade de controle
-	{controlunit}
-
-	{signal}
+	{inputs}
 	
-	{input}
-	
-	{output}
+	{outputs}
 		
 	SC_CTOR(Processor);
 };

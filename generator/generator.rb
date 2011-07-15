@@ -1,103 +1,76 @@
 require 'rexml/document'
 include REXML
+#require "rubypython"
 
 @xml = nil
 @constructor = ""
 
+  
 def readXML 
   file = File.open('processor.xml')
   @xml = Document.new(file)
   file.close
 end
 
-def readConstructor(variable,typeVariable)
-    @constructor.concat(variable)
-    @constructor.concat(" = new "+typeVariable)
-    @constructor.concat("(\""+variable+"\")\n")
-end
-
-def readRegister
-  regS = "//Conjunto de registradores \n"
-  @xml.elements.each('//registers/register') do |register|
-    readConstructor(register.text,register.attributes['type'])
-    regS.concat(register.attributes['type'])
-    if register.attributes['style']=='pointer'
-      regS.concat(' *')
+def readConstructor(node)
+    @constructor.concat(node.attributes['value'])
+    @constructor.concat(" = new "+node.attributes['type'])
+    parameters="\""+node.attributes['value']+"\""
+    if node.elements.size>0 then
+        node.each_element("parameter") do |p|
+            parameters = parameters+","+p.text
+        end
     end
-    regS.concat(register.text)
-    regS.concat(";\n")   
-  end
-  regS
+    @constructor.concat("("+parameters+");\n")
 end
 
-def readRegisterFile
-  regS = "//Conjunto de registerFile \n"
-  @xml.elements.each('//registersfiles/registerfile') do |register|
-    readConstructor(register.text,register.attributes['type'])
-    regS.concat(register.attributes['type'])
-    if register.attributes['style']=='pointer'
-      regS.concat(' *')
-    end
-    regS.concat(register.text)
-    regS.concat(";\n")   
+def readAssigns
+  vector = ""
+  variavel = @xml.elements["//assigns/assign"].attributes["variable"] + "->assign"
+  @xml.elements.each('//assigns/assign/parameter') do |x|
+    vector.concat(variavel)
+    vector.concat("(\""+x.attributes['internal']+"\",&"+x.attributes['external']+");\n")
   end
-  regS
+  vector
 end
 
-def readMultiplexer
-  multiplexer = "//Conjunto de registerFile \n"
-  @xml.elements.each('//multiplexers/multiplexer') do |x|
-    readConstructor(x.text,x.attributes['type'])
-    multiplexer.concat(x.attributes['type'])
+def readVector
+  vector = ""
+  nomevector = @xml.elements["//vectors"].attributes["name"]
+  vector = "vector <std::string> "+ nomevector + ";\n"
+  @xml.elements.each('//vectors/vector') do |x|
+    vector.concat(nomevector+".push_back(\"");
+    vector.concat(x.text);
+    vector.concat("\");\n")
+  end
+  vector
+end
+
+def readSignalInternal
+  signal=""
+  @xml.elements.each('//processorsignals/psignals') do |x|
+    signal.concat(x.attributes['variable'])
+    signal.concat("->")
+    signal.concat(x.elements["psignal"].attributes["internal"])
+    signal.concat("(")
+    signal.concat(x.elements["psignal"].text)
+    signal.concat(");\n")
+  end
+  signal
+end
+
+def readComponents
+  components = "//Conjunto de registradores \n"
+  @xml.elements.each('//components/component') do |x|
+    readConstructor(x)
+    components.concat(x.attributes['type'])
     if x.attributes['style']=='pointer'
-      multiplexer.concat(' *')
+      components.concat(' *')
     end
-    multiplexer.concat(x.text)
-    multiplexer.concat(";\n")   
+    components.concat(x.attributes['value'])
+    components.concat(";\n")   
   end
-  multiplexer
-end
-
-def readDemultiplexer
-  demultiplexer = "//Conjunto de registerFile \n"
-  @xml.elements.each('//demultiplexers/demultiplexer') do |x|
-    readConstructor(x.text,x.attributes['type'])
-    demultiplexer.concat(x.attributes['type'])
-    if x.attributes['style']=='pointer'
-      demultiplexer.concat(' *')
-    end
-    demultiplexer.concat(x.text)
-    demultiplexer.concat(";\n")   
-  end
-  demultiplexer
-end
-
-def readULA
-  ula = "//Conjunto de registerFile\n"
-  @xml.elements.each('//ulas/ula') do |x|
-    readConstructor(x.text,x.attributes['type'])
-    ula.concat(x.attributes['type'])
-    if x.attributes['style']=='pointer'
-      ula.concat(' *')
-    end
-    ula.concat(x.text+';')
-    ula.concat("\n")   
-  end
-  ula
-end
-
-def readControlUnit
-  controlunit = "//Conjunto de registerFile \n"
-  @xml.elements.each('//controlunits/controlunit') do |x|
-    readConstructor(x.text,x.attributes['type'])
-    controlunit.concat(x.attributes['type'])
-    if x.attributes['style']=='pointer'
-      controlunit.concat(' *')
-    end
-    controlunit.concat(x.text)
-    controlunit.concat(";\n")   
-  end
-  controlunit
+  components
 end
 
 def readSignal
@@ -115,6 +88,27 @@ def readSignal
     signal.concat(";\n")   
   end
   signal
+end
+
+def readMethods
+  method = "//Signals \n"
+  @xml.elements.each('//methods/method') do |x|
+    method.concat(x.attributes['type'])
+    method.concat("(")
+    method.concat(x.text)
+    method.concat(");\n")
+  end
+  method
+end
+
+def readSensitive
+  method = "//Signals \n"
+  @xml.elements.each('//sensitives/sensitive') do |x|
+    method.concat("sensitive << ")
+    method.concat(x.text)
+    method.concat(";\n")
+  end
+  method
 end
 
 def readInput
@@ -151,19 +145,9 @@ def readOutput
   signal
 end
 
-def readModel
+def readFile(file)
   lines = '';
-  File.open('model.h','r') do |l|
-    while line = l.gets
-      lines.concat(line)
-    end
-  end
-  lines
-end
-
-def readModelMain
-  lines = '';
-  File.open('model.cpp','r') do |l|
+  File.open(file,'r') do |l|
     while line = l.gets
       lines.concat(line)
     end
@@ -173,19 +157,12 @@ end
 
 def writeProcessor
   processor = File.open('Processor.h','wb')
-  content_model = readModel
+  content_model = readFile("model.h")
   #readR = readRegister
-  content_model =  content_model.gsub('{register}',readRegister)
-  content_model =  content_model.gsub('{registerfile}',readRegisterFile)
-  content_model =  content_model.gsub('{multiplexer}',readMultiplexer)
-  content_model =  content_model.gsub('{demultiplexer}',readDemultiplexer)
-  content_model =  content_model.gsub('{ula}',readULA)
-  content_model =  content_model.gsub('{controlunit}',readControlUnit)
-  content_model =  content_model.gsub('{signal}',readSignal)
-  content_model =  content_model.gsub('{input}',readInput)
-  content_model =  content_model.gsub('{output}',readOutput)
-  content_model =  content_model.gsub('{constructor}',@constructor)
-  
+  content_model =  content_model.gsub('{components}',readComponents)
+  content_model =  content_model.gsub('{signals}',readSignal)
+  content_model =  content_model.gsub('{inputs}',readInput)
+  content_model =  content_model.gsub('{outputs}',readOutput)
   puts content_model
   processor.write(content_model.to_s)
   processor.close
@@ -193,8 +170,15 @@ end
 
 def writeProcessorMain
   processor = File.open('Processor.cpp','wb')
-  content_model = readModelMain
+  content_model = readFile("model.cpp")
+  python  = readFile("controlUnitCode")
   content_model =  content_model.gsub('{constructor}',@constructor)
+  content_model =  content_model.gsub('{signals}',readSignalInternal)
+  content_model =  content_model.gsub('{vectors}',readVector)
+  content_model =  content_model.gsub('{python}',python)  
+  content_model =  content_model.gsub('{method}',readMethods)  
+  content_model =  content_model.gsub('{sensitive}',readSensitive)  
+  content_model =  content_model.gsub('{assigns}',readAssigns)  
   puts content_model
   processor.write(content_model.to_s)
   processor.close
@@ -209,3 +193,4 @@ end
 #writeProcessor
 #readRegister
 writeProcessorDoc
+#rubyPythonShell
