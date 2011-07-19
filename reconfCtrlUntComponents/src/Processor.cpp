@@ -131,8 +131,7 @@ Processor::Processor(sc_module_name name) : sc_module(name){
 	outputNames.push_back("loadDR");
 
 	map<string,vector<string> > stateOutputMap;
-	//TODO generate a fetch instruction modeling procedure
-	{ /*microinstructions for 0_0begin*/
+	{ /*microinstructions for fetchInstructionbegin */
 		vector<string > microInstructions;
 		/*microinstructions for macro resetAllLoads*/
 		microInstructions.push_back("rfReadWriteBit 0 writeMemory 0 loadRA 0 loadRB 0 loadIR 0 loadAR 0 loadPC 0 loadDR 0 dRinMuxSel 1 dRoutDemuxSel 0");
@@ -145,8 +144,8 @@ Processor::Processor(sc_module_name name) : sc_module(name){
 		/*microinstructions for macro incrementPC*/
 		microInstructions.push_back("rfReadWriteBit 0 writeMemory 0 loadRA 0 loadRB 0 loadIR 0 loadAR 0 loadPC 0 loadDR 0 dRinMuxSel 1 dRoutDemuxSel 0 ulaOp 4 ulaInAMuxSel 2 ulaOutDemuxSel 2 loadRA 1 wait 1 loadPC 1 wait 1");
 		stateOutputMap["fetchInstruction"] = microInstructions;
-	}
-	{
+	} /*microinstructions for fetchInstruction end*/
+	{ /*microinstructions for 0_0begin */
 		vector<string > microInstructions;
 		microInstructions.push_back("rfSel dest");
 		/*microinstructions for macro loadsARWithPc*/
@@ -162,7 +161,23 @@ Processor::Processor(sc_module_name name) : sc_module(name){
 		microInstructions.push_back("ulaOutDemuxSel 4 rfReadWriteBit 1");
 		microInstructions.push_back("wait 1");
 		stateOutputMap["0_0"] = microInstructions;
-	} /*microinstructions for 0_0end*/
+	} /*microinstructions for 0_0 end*/
+	{ /*microinstructions for 2_1begin */
+		vector<string > microInstructions;
+		microInstructions.push_back("if statusBit");
+		/*microinstructions for macro loadsARWithPc*/
+		microInstructions.push_back("ulaOp 5 ulaInAMuxSel 2 ulaOutDemuxSel 0 writeMemory 0 dRinMuxSel 1 dRoutDemuxSel 0 loadRA 1 wait 1 loadAR 1 wait 1 wait 1 loadDR 1 wait 1");
+		/*microinstructions for macro resetAllLoads*/
+		microInstructions.push_back("rfReadWriteBit 0 writeMemory 0 loadRA 0 loadRB 0 loadIR 0 loadAR 0 loadPC 0 loadDR 0 dRinMuxSel 1 dRoutDemuxSel 0");
+		microInstructions.push_back("ulaOp 5 ulaInAMuxSel 1 loadRA 1");
+		microInstructions.push_back("wait 1");
+		microInstructions.push_back("ulaOutDemuxSel 2 loadPC 1");
+		microInstructions.push_back("wait 1");
+		microInstructions.push_back("else statusBit");
+		/*microinstructions for macro incrementPC*/
+		microInstructions.push_back("rfReadWriteBit 0 writeMemory 0 loadRA 0 loadRB 0 loadIR 0 loadAR 0 loadPC 0 loadDR 0 dRinMuxSel 1 dRoutDemuxSel 0 ulaOp 4 ulaInAMuxSel 2 ulaOutDemuxSel 2 loadRA 1 wait 1 loadPC 1 wait 1");
+		stateOutputMap["2_1"] = microInstructions;
+	} /*microinstructions for 2_1 end*/
 
 
 	controlUnit = new CustomizableControlUnit("ControlUnit", outputNames, stateOutputMap);
