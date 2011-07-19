@@ -53,13 +53,13 @@
         <signal type='sc_int' length='WORD_SIZE'>pCinSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>iRinSignal</signal>
         <signal type='bool' length='0'>ulaStatusSignal</signal>
-        <signal type='bool' length='0'>writeMemorySignal</signal>
-        <signal type='bool' length='0'>rALoadSignal</signal>
-        <signal type='bool' length='0'>rBLoadSignal</signal>
-        <signal type='bool' length='0'>aRLoadSignal</signal>
-        <signal type='bool' length='0'>dRLoadSignal</signal>
-        <signal type='bool' length='0'>pCLoadSignal</signal>
-        <signal type='bool' length='0'>iRLoadSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>writeMemorySignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>rALoadSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>rBLoadSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>aRLoadSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>dRLoadSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>pCLoadSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>iRLoadSignal</signal>
     </signals>
     <inputs>
         <input type='sc_int' length='WORD_SIZE'>memmoryDataInput</input>
@@ -68,7 +68,7 @@
     </inputs>
     <outputs>
         <output type='sc_int' length='WORD_SIZE'>memoryData</output>
-        <output type='bool' length='WORD_SIZE'>writeMemory</output>
+        <output type='sc_int' length='WORD_SIZE'>writeMemory</output>
         <output type='sc_int' length='WORD_SIZE'>memoryAddress</output>
     </outputs>
     <processorsignals>
