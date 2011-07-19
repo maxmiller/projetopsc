@@ -6,6 +6,9 @@ using namespace std;
 
 Processor::Processor(sc_module_name name) : sc_module(name){
 	//SC_THREAD(processorBehaviour);
+	{vectors}
+	
+	{python}
 
 	{constructor}
  
@@ -13,9 +16,6 @@ Processor::Processor(sc_module_name name) : sc_module(name){
 
 	{assigns}
 	
-	{vectors}
-	
-	{python}
 	
 	{sensitive}
 	{method}
