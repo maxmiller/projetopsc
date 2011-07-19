@@ -15,6 +15,8 @@ def processFsm(fsmDir):
 	files = os.listdir(fsmDir)
 	fsm_set = list()
 	for f in files:
+		if not f.endswith(".xml"):
+			continue
 		print ('parsing '+ fsmDir + f)
 		doc = xml.dom.minidom.parse(fsmDir + f)
 
@@ -86,12 +88,12 @@ def processFsm(fsmDir):
 
 		fsm_set.append(fsm_struct)
 
+		#print (states)
+	#	s = fsm["initialState"]
+	#	s_ = s["nextState"]
+	#	print (s["id"], s["command"])
+	#	while not s_ == None:
+	#		s = s_
+	#		print (s["id"], s["command"])
+	#		s_ = s["nextState"]
 	return fsm_set
-	#print (states)
-	#s = fsm["initialState"]
-	#s_ = s["nextState"]
-	#print (s["id"], s["command"])
-	#while not s_ == None:
-	#	s = s_
-#		print (s["id"], s["command"])
-#		s_ = s["nextState"]

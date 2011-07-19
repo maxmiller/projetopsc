@@ -59,7 +59,6 @@ def generateCode(fsm_set):
 		codeFile.write("} /*microinstructions for " + instructionName + " end*/\n")
 	codeFile.close()
 
-print ("running")
 if not len(sys.argv) == 2:
 	print('usage: python customizableControllUnitGenerator.py <fsmDirectory>')
 else:
