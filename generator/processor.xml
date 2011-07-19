@@ -221,7 +221,7 @@
             <parameter internal="ulaInBMuxSel" external="ulaInBMuxSelSignal"/>
             <parameter internal="ulaOutDemuxSel" external="ulaOutDemuxSelSignal"/>
             <parameter internal="dRinMuxSel" external="dRinMuxSelSignal"/>
-            <parameter internal="dRoutMuxSel" external="dRoutMuxSelSignal"/>
+            <parameter internal="dRoutDemuxSel" external="dRoutDemuxSelSignal"/>
             <parameter internal="ulaOp" external="ulaOpSignal"/>
             <parameter internal="writeMemory" external="writeMemory"/>
         </assign>
