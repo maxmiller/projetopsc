@@ -5,7 +5,7 @@
 #include "config.h"
 
 #include "RegisterAssyncReset.h"
-#include "ControlUnit.h"
+#include "CustomizableControlUnit.h"
 #include "RegisterFile.h"
 #include "Multiplexer.h"
 #include "Demultiplexer.h"

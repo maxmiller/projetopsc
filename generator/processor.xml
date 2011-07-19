@@ -64,7 +64,7 @@
     <inputs>
         <input type='sc_int' length='WORD_SIZE'>memmoryDataInput</input>
         <input type='bool' length='0'>clock</input>
-        <input type='bool' length='0'>resetRegisters</input>
+        <input type='bool' length='0'>resetRegister</input>
     </inputs>
     <outputs>
         <output type='sc_int' length='WORD_SIZE'>memoryData</output>
