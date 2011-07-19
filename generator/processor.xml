@@ -34,7 +34,6 @@
 	<signal type='sc_int' length='WORD_SIZE'>aRoutToMemorySignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>dRinMuxSelSignal</signal>
 	    <signal type='sc_int' length='WORD_SIZE'>dRoutDemux</signal>
-		<signal type='sc_int' length='WORD_SIZE'>dRoutSignal</signal>
 		<signal type='sc_int' length='WORD_SIZE'>rFSelSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>rFoutSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>rFinSignal</signal>
