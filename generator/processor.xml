@@ -21,10 +21,7 @@
         <component type='Multiplexer' style='pointer' value='rbMultiplexer'>
             <parameter>5</parameter>
         </component>
-		<component type='Multiplexer' style='pointer' value='dRinMux'>
-            <parameter>5</parameter>
-        </component>
-        <component type='Demultiplexer' style='pointer' value='ulaOutputDemultiplexer'>
+	   <component type='Demultiplexer' style='pointer' value='ulaOutputDemultiplexer'>
             <parameter>5</parameter>
         </component>
         <component type='ULA' style='pointer' value='ula'>ula</component>
