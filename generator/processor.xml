@@ -76,10 +76,10 @@
 			<signal type='sc_int' length='WORD_SIZE'>rfSelSignal</signal>
 	
 			<signal type='sc_int' length='WORD_SIZE'>dROutDemuxSelSignal</signal>
-					<signal type='sc_int' length='WORD_SIZE'>dROutMuxSelSignal</signal>
+					<signal type='sc_int' length='WORD_SIZE'>dRoutMuxSelSignal</signal>
 		<signal type='sc_int' length='WORD_SIZE'>demuxUlaOutSingal</signal>
 			<signal type='sc_int' length='WORD_SIZE'>rFWriteBitSignal</signal>
-			<signal type='sc_int' length='WORD_SIZE'>rFReadWriteBitSignal</signal>
+			<signal type='sc_int' length='WORD_SIZE'>rfReadWriteBitSignal</signal>
 		
 
     </signals>
@@ -158,7 +158,7 @@
 		
         <psignals variable='ula'>
             <psignal internal='ulaOut'>demuxUlaOutSingal</psignal>
-            <psignal internal='opSel'>ulaOpSingal</psignal>
+            <psignal internal='opSel'>ulaOpSignal</psignal>
             <psignal internal='ulaStatus'>ulaStatusSignal</psignal>
             <psignal internal='opA'>rAoutSignal</psignal>
             <psignal internal='opB'>rBoutSignal</psignal>
