@@ -7,14 +7,14 @@
 
 typedef enum UlaOperation_{
 	ulaOperation_add = 1,
-	ulaOperation_and,
-	ulaOperation_multiply,
-	ulaOperation_inc,
-	ulaOperation_doNothing,
-	ulaOperation_lt,
-	ulaOperation_gt,
-	ulaOperation_eq,
-	ulaOperation_eqz,
+	ulaOperation_and, //2
+	ulaOperation_multiply, //3
+	ulaOperation_inc, //4
+	ulaOperation_doNothing, //5
+	ulaOperation_lt, //6
+	ulaOperation_gt, //7
+	ulaOperation_eq, //8
+	ulaOperation_eqz, //9
 }UlaOperation;
 
 #endif

@@ -53,8 +53,8 @@ void ControlUnit::loadsARWithPc(){
 	loadRA = 1; // RA = PC
 	wait(1);
 	loadAR = 1; // AR = PC
-	wait(1);
-	wait(1); //delay de um ciclo da memória
+	wait(1); //espera AR
+	wait(1); //espera MemAddr = AR
 	loadDR = 1; // DR = memory[PC]
 	wait(1);
 }

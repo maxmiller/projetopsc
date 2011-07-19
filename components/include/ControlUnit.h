@@ -5,21 +5,21 @@
 #include "config.h"
 
 typedef enum UlaInputSelection_t{
-	UlaInputSelection_AR,
-	UlaInputSelection_DR,
-	UlaInputSelection_PC,
-	UlaInputSelection_IR,
-	UlaInputSelection_RF,
-	UlaInputSelection_RStatus,
+	UlaInputSelection_AR, //0
+	UlaInputSelection_DR, //1
+	UlaInputSelection_PC, //2
+	UlaInputSelection_IR, //3
+	UlaInputSelection_RF, //4
+	UlaInputSelection_RStatus, //5
 }UlaInputSelection;
 
 typedef enum UlaOutputSelection_t{
-	UlaOutputSelection_AR,
-	UlaOutputSelection_DR,
-	UlaOutputSelection_PC,
-	UlaOutputSelection_IR,
-	UlaOutputSelection_RF,
-	UlaOutputSelection_RStatus,
+	UlaOutputSelection_AR, //0
+	UlaOutputSelection_DR, //1
+	UlaOutputSelection_PC, //2
+	UlaOutputSelection_IR, //3
+	UlaOutputSelection_RF, //4
+	UlaOutputSelection_RStatus, //5
 }UlaOutputSelection;
 
 SC_MODULE (ControlUnit) {
