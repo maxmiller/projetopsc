@@ -11,7 +11,7 @@
         <component type='Multiplexer' style='pointer' value='raMultiplexer' >
             <parameter>5</parameter>
         </component>
-        <component type='Multiplexer' style='pointer' value='dRinMux' >
+        <component type='Multiplexer' style='pointer' value='dRInMux' >
             <parameter>2</parameter>
         </component>
         <component type='Demultiplexer' style='pointer' value='dROutDemux' >
@@ -25,7 +25,7 @@
             <parameter>5</parameter>
         </component>
         <component type='ULA' style='pointer' value='ula'>ula</component>
-        <component type='CustomizableControlUnit' style='pointer' value='controlunit'>
+        <component type='CustomizableControlUnit' style='pointer' value='controlUnit'>
             <parameter>outputNames</parameter>
             <parameter>stateOutputMap</parameter>
         </component>
@@ -38,7 +38,8 @@
         <signal type='sc_int' length='WORD_SIZE'>rFoutSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>rFinSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>muxRaOutSignal</signal>
-        <signal type='sc_int' length='WORD_SIZE'>muxRbOutSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>muxRaSelSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>muxRbOutSignal</signal>
 		<signal type='sc_int' length='WORD_SIZE'>muxRbSelSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>demuxUlaInSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>demuxUlaSelSignal</signal>
@@ -65,9 +66,14 @@
         <signal type='sc_int' length='WORD_SIZE'>pCLoadSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>iRLoadSignal</signal>
 		<signal type='sc_int' length='WORD_SIZE'>ula_Mux_to_dRoutMux_signal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>ula_Mux_to_dRintMux_signal</signal>
+	
 	
 			<signal type='sc_int' length='WORD_SIZE'>dROutDemuxSelSignal</signal>
 		<signal type='sc_int' length='WORD_SIZE'>demuxUlaOutSingal</signal>
+			<signal type='sc_int' length='WORD_SIZE'>rFWriteBitSignal</signal>
+			<signal type='sc_int' length='WORD_SIZE'>muxRaSelSignal</signal>
+		
 
     </signals>
     <inputs>
@@ -121,7 +127,7 @@
         </psignals>
 
         <psignals variable='dROutDemux'>
-            <psignal internal='input'>dROutSignal</psignal>
+            <psignal internal='input'>dRoutSignal</psignal>
             <psignal internal='outputs[0]'>ula_Mux_to_dRoutMux_signal</psignal>
             <psignal internal='outputs[1]'>memoryDataOutput</psignal>
             <psignal internal='sel'>dROutDemuxSelSignal</psignal>
@@ -145,14 +151,14 @@
 		
         <psignals variable='ula'>
             <psignal internal='ulaOut'>demuxUlaOutSingal</psignal>
-            <psignal internal='opsel'>ulaOpSingal</psignal>
+            <psignal internal='opSel'>ulaOpSingal</psignal>
             <psignal internal='ulaStatus'>ulaStatusSignal</psignal>
             <psignal internal='opA'>rAoutSignal</psignal>
             <psignal internal='opB'>rBoutSignal</psignal>
         </psignals>
         
         <psignals variable='registerFile'>
-            <psignal internal='clk'>clock</psignal>
+            <psignal internal='clock'>clock</psignal>
             <psignal internal='sel'>rFSelSignal</psignal>
             <psignal internal='rwBit'>rFWriteBitSignal</psignal>
             <psignal internal='out'>rFoutSignal</psignal>
@@ -180,12 +186,13 @@
         </psignals>
 
         <psignals variable='ulaOutputDemultiplexer'>
-            <psignal internal='inputs[0]'>aRoutSignal</psignal>
-            <psignal internal='inputs[1]'>ula_Mux_to_dRintMux_signal</psignal>
-            <psignal internal='inputs[2]'>pCinSignal</psignal>
-            <psignal internal='inputs[3]'>iRinSignal</psignal>
-            <psignal internal='inputs[4]'>rFinSignal</psignal>
+            <psignal internal='outputs[0]'>aRoutSignal</psignal>
+            <psignal internal='outputs[1]'>ula_Mux_to_dRintMux_signal</psignal>
+            <psignal internal='outputs[2]'>pCinSignal</psignal>
+            <psignal internal='outputs[3]'>iRinSignal</psignal>
+            <psignal internal='outputs[4]'>rFinSignal</psignal>
             <psignal internal='sel'>demuxUlaSelSignal</psignal>
+            <psignal internal='input'>demuxUlaOutSignal</psignal>
         </psignals>
 		
         <psignals variable='controlUnit'>
