@@ -49,12 +49,17 @@ end
 def readSignalInternal
   signal=""
   @xml.elements.each('//processorsignals/psignals') do |x|
-    signal.concat(x.attributes['variable'])
-    signal.concat("->")
-    signal.concat(x.elements["psignal"].attributes["internal"])
-    signal.concat("(")
-    signal.concat(x.elements["psignal"].text)
-    signal.concat(");\n")
+    nome = x.attributes['variable']
+    #puts nome
+    x.elements.each('psignal') do |y|
+       signal.concat(nome)
+       signal.concat("->")
+       signal.concat(y.attributes["internal"])
+      # puts signal
+       signal.concat("(")
+       signal.concat(y.text)
+       signal.concat(");\n")
+    end
   end
   signal
 end
@@ -163,7 +168,7 @@ def writeProcessor
   content_model =  content_model.gsub('{signals}',readSignal)
   content_model =  content_model.gsub('{inputs}',readInput)
   content_model =  content_model.gsub('{outputs}',readOutput)
-  puts content_model
+  puts "Generate Processor.h "# content_model
   processor.write(content_model.to_s)
   processor.close
 end
@@ -179,7 +184,7 @@ def writeProcessorMain
   content_model =  content_model.gsub('{method}',readMethods)  
   content_model =  content_model.gsub('{sensitive}',readSensitive)  
   content_model =  content_model.gsub('{assigns}',readAssigns)  
-  puts content_model
+  puts "Generator Processor.cpp"  #content_model
   processor.write(content_model.to_s)
   processor.close
 end
