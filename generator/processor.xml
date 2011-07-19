@@ -14,11 +14,14 @@
         <component type='Multiplexer' style='pointer' value='dRinMux' >
             <parameter>2</parameter>
         </component>
-        <component type='Demultiplexer' style='pointer' value='dRoutDemux' >
+        <component type='Demultiplexer' style='pointer' value='dROutDemux' >
             <parameter>2</parameter>
         </component>
 		
         <component type='Multiplexer' style='pointer' value='rbMultiplexer'>
+            <parameter>5</parameter>
+        </component>
+		<component type='Multiplexer' style='pointer' value='dRinMux'>
             <parameter>5</parameter>
         </component>
         <component type='Demultiplexer' style='pointer' value='ulaOutputDemultiplexer'>
@@ -31,11 +34,16 @@
         </component>
     </components>
     <signals>
-        <signal type='sc_int' length='WORD_SIZE'>rFSelSignal</signal>
+	<signal type='sc_int' length='WORD_SIZE'>aRoutToMemorySignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>dRinMuxSelSignal</signal>
+	    <signal type='sc_int' length='WORD_SIZE'>dRoutDemux</signal>
+		<signal type='sc_int' length='WORD_SIZE'>dRoutSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>rFSelSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>rFoutSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>rFinSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>muxRaOutSignal</signal>
-        <signal type='sc_int' length='WORD_SIZE'>muxRbSelSignal</signal>
+        <signal type='sc_int' length='WORD_SIZE'>muxRbOutSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>muxRbSelSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>demuxUlaInSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>demuxUlaSelSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>demuxUlaOutSignal</signal>
@@ -60,14 +68,19 @@
         <signal type='sc_int' length='WORD_SIZE'>dRLoadSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>pCLoadSignal</signal>
         <signal type='sc_int' length='WORD_SIZE'>iRLoadSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>ula_Mux_to_dRoutMux_signal</signal>
+	
+			<signal type='sc_int' length='WORD_SIZE'>dROutDemuxSelSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>demuxUlaOutSingal</signal>
+
     </signals>
     <inputs>
-        <input type='sc_int' length='WORD_SIZE'>memmoryDataInput</input>
+        <input type='sc_int' length='WORD_SIZE'>memoryDataInput</input>
         <input type='bool' length='0'>clock</input>
         <input type='bool' length='0'>resetRegister</input>
     </inputs>
     <outputs>
-        <output type='sc_int' length='WORD_SIZE'>memoryData</output>
+        <output type='sc_int' length='WORD_SIZE'>memoryDataOutput</output>
         <output type='sc_int' length='WORD_SIZE'>writeMemory</output>
         <output type='sc_int' length='WORD_SIZE'>memoryAddress</output>
     </outputs>
@@ -173,9 +186,9 @@
         <psignals variable='ulaOutputDemultiplexer'>
             <psignal internal='inputs[0]'>aRoutSignal</psignal>
             <psignal internal='inputs[1]'>ula_Mux_to_dRintMux_signal</psignal>
-            <psignal internal='inputs[2]'>pCintSignal</psignal>
+            <psignal internal='inputs[2]'>pCinSignal</psignal>
             <psignal internal='inputs[3]'>iRinSignal</psignal>
-            <psignal internal='inputs[4]'>rFintSignal</psignal>
+            <psignal internal='inputs[4]'>rFinSignal</psignal>
             <psignal internal='sel'>demuxUlaSelSignal</psignal>
         </psignals>
 		
