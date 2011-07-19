@@ -23,5 +23,8 @@ SC_MODULE(Processor){
 	{outputs}
 		
 	SC_CTOR(Processor);
+	
+	void processorBehavior();
+	void processorBehavior2();
 };
 #endif

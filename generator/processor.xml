@@ -67,12 +67,19 @@
         <signal type='sc_int' length='WORD_SIZE'>iRLoadSignal</signal>
 		<signal type='sc_int' length='WORD_SIZE'>ula_Mux_to_dRoutMux_signal</signal>
 		<signal type='sc_int' length='WORD_SIZE'>ula_Mux_to_dRintMux_signal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>ulaOpSignal</signal>
+			<signal type='sc_int' length='WORD_SIZE'>ulaInAMuxSelSignal</signal>
+					<signal type='sc_int' length='WORD_SIZE'>ulaInBMuxSelSignal</signal>
 	
+							<signal type='sc_int' length='WORD_SIZE'>ulaOutDemuxSelSignal</signal>
+		<signal type='sc_int' length='WORD_SIZE'>rfSelSignal</signal>
+			<signal type='sc_int' length='WORD_SIZE'>rfSelSignal</signal>
 	
 			<signal type='sc_int' length='WORD_SIZE'>dROutDemuxSelSignal</signal>
+					<signal type='sc_int' length='WORD_SIZE'>dROutMuxSelSignal</signal>
 		<signal type='sc_int' length='WORD_SIZE'>demuxUlaOutSingal</signal>
 			<signal type='sc_int' length='WORD_SIZE'>rFWriteBitSignal</signal>
-			<signal type='sc_int' length='WORD_SIZE'>muxRaSelSignal</signal>
+			<signal type='sc_int' length='WORD_SIZE'>rFReadWriteBitSignal</signal>
 		
 
     </signals>
