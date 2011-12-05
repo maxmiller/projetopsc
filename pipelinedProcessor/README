@@ -1,0 +1,25 @@
+Repósitorio do projeto da disciplina de Projeto de Sistemas em CHIP
+
+3 de julho
+
+tive que criar um novo diretório, pois vamos ter que mudar todas as entradas e saídas dos componentes para sc_int<WORD_SIZE>, assim a unidade de controle fica mais simples
+
+Dúvida: Formato da instrução, precisa ser customizável tambám? 
+
+Problema: Na unidade de controle algumas etapas dependem diretamente dos valores de type, op, src1, scr2 e dest, todos presentes em substrings fixas de IR de acordo com a especificação das instruções que pusemos em outro documento. Para esse problema temos duas opções:
+
+Customizar o formato da instrução:
+
+Mudar o formato da instrução acarretaria em mais logica na unidade de controle customizável, embora eu não saiba exatamente quanta lógica. Na verdade, na minha opinião, o maior problema é "como especificar o formato da instrução".
+
+Não customizar o formato da instrução:
+
+Fazendo isso todos os tipos de processadores que podemos especificar com nossa unidade ficarão limitados ao formato atual, perdendo generalidade, porém a implementação é mais simples
+
+Solução adotada: Acredito que a mais simples opção é a mais viável no momento então NÃO iremos ter formato de instrução customizável
+
+9 de julho
+
+Dúvida: Como fazer os jumps?
+
+Problema: atualmente em nossa unidade de controle o jump condicional é feito através de um if, como podemos fazer isso para a unidade customizável?
