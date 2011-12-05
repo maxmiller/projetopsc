@@ -106,4 +106,47 @@ Data de Entrega do processador:
 sexta, dia 18 de junho
 
 Data de Entrega do trabalho final:
-dia 15 de julho
+
+28 de outubro
+
+primeiros esforços a respeito do pipeline
+
+opção 1: Criação de uma máquina de estado chamada pipeline control que executa em paralelo com a unidade
+de controle
+
+
+13 de novembro
+
+Instruções da unidade de controle com pipeline
+
+-Intruçoes Implementadas
+tipo 1 Operação de Registradores
+type(2), Op(5), dest(3), src1(3), scr2(3)
+Op = 0 => RF [dest] = RF[src1] + RF[src2]
+Op = 1 => RF [dest] = RF[src1] x RF[src2]
+Op = 2 => RF [dest] = RF[src1] and RF(src2]
+Op = 3 => RF [dest] = RF[src1] + 1
+Op = 4 => RF [dest] = RF[src1] + src2
+
+ADD
+ADDI
+AND
+ANDI
+BEQZ
+J
+LW
+OR
+ORI
+SUB
+SUBI
+SW
+XOR
+XORI
+
+
+tipo 2 Operação de Memória
+type(2), Op(5), dest(3), src1(3), scr2(3)
+Op = 0 => RF [dest] = Mem[RF[scr1] + src2]
+Op = 1 => Mem[RF[dest]] = RF[scr1]
+
+http://www.csee.umbc.edu/courses/undergraduate/411/spring96/dlx.html
